@@ -24,7 +24,7 @@ class Board extends React.Component {
     if (this.props.playerID == 0) {
       this.mountDrawer();
     } else if (this.props.playerID == 1) {
-      this.mountDrawer();
+      this.mountTraitor();
     }
   }
 
@@ -69,7 +69,7 @@ class Board extends React.Component {
   }
 
   drawInk() {
-    console.log('drawInk: ' + this.props.playerID)
+    console.log('drawInk: ' + this.props.playerID);
     var clonepathinks = JSON.parse(JSON.stringify(this.pathinks));
     var paths = [];
     Object.keys(clonepathinks).forEach(thispath => {
@@ -77,10 +77,10 @@ class Board extends React.Component {
       var i = paths.push(new this.paper.Path()) - 1;
       paths[i].importJSON(thispath);
       paths[i].onClick = event => {
-        this.opacity = 0;
+        paths[i].opacity = 0;
         delete this.pathinks[thispath];
       };
-      console.log(this.paper)
+      console.log(this.paper);
     });
   }
 
@@ -93,8 +93,8 @@ class Board extends React.Component {
   updateTraitor() {
     this.paper = new paper.PaperScope();
     this.paper.setup(this.canvas); // Setup Paper #canvas
-    if (this.pathinks ){
-      this.drawInk()
+    if (this.pathinks) {
+      this.drawInk();
     }
   }
 
@@ -182,7 +182,7 @@ class Board extends React.Component {
   // Clear Paper Drawing Canvas
   clearDrawing() {
     // Remove Paper Path Layer
-    this.paper.project.activeLayer.removeChildren();
+    this.paper.project.removeChildren();
     this.paper.view.draw();
 
     // Init Ink Array
@@ -211,7 +211,91 @@ class Board extends React.Component {
     return true;
   }
 
-  exportPathInks() {
+  submit() {
+    if (this.props.playerID == 0) {
+      this.submitDrawer();
+    } else if (this.props.playerID == 1) {
+      this.submitTraitor();
+    }
+  }
+
+  submitTraitor() {
+    this.checkQuickDraw()
+
+  }
+
+  getCanvasDimensions(){
+    var w = this.canvas.offsetWidth;
+    var h = this.canvas.offsetHeight;
+    return {height: h, width: w};
+  }
+
+  checkQuickDraw() {
+    // Get Paper Canvas Weight/Height
+    var c_dims = this.getCanvasDimensions();
+
+    // Set Base URL for Quickdraw Google AI API
+    var url =
+      'https://inputtools.google.com/request?ime=handwriting&app=quickdraw&dbg=1&cs=1&oe=UTF-8';
+
+    // Set HTTP Headers
+    var headers = {
+      Accept: '*/*',
+      'Content-Type': 'application/json',
+    };
+
+    // Init HTTP Request
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', url,false);
+    Object.keys(headers).forEach(function(key, index) {
+      xhr.setRequestHeader(key, headers[key]);
+    });
+
+    // HTTP Request On Load
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        var res = xhr.responseText; // HTTP Response Text
+        this.parseResponse(res); // Parse Response
+      } else if (xhr.status !== 200) {
+        console.log('Request failed.  Returned status of ' + xhr.status);
+      }
+    };
+
+    // Create New Data Payload for Quickdraw Google AI API
+    var data = {
+      input_type: 0,
+      requests: [
+        {
+          language: 'quickdraw',
+          writing_guide: { width: c_dims.width, height: c_dims.height },
+          ink: Object.values(this.pathinks),
+        },
+      ],
+    };
+
+    // Convert Data Payload to JSON String
+    var request_data = JSON.stringify(data);
+
+    // Send HTTP Request w/ Data Payload
+    xhr.send(request_data);
+  }
+
+  // Parse Quickdraw Google AI API Response
+  parseResponse(res) {
+    // Convert Response String to JSON
+    var res_j = JSON.parse(res);
+    // Extract Guess Score String from Response and Convert to JSON
+    this.scores = JSON.parse(
+      res_j[1][0][3].debug_info.match(/SCORESINKS: (.+) Combiner:/)[1]
+    );
+    var p_title = 'BEST GUESS: ' + this.scores[0][0] + ' (' + this.scores[0][1] + ')';
+    console.log(p_title)
+    // Add New Guess Scores to Score History
+    // updateScoresHistory();
+    // Plot Guess Scores
+  }
+
+  submitDrawer() {
     this.newInk();
     var pathsexport = this.paths.map(path => path.exportJSON());
 
@@ -249,15 +333,14 @@ class Board extends React.Component {
     if (this.props.ctx.gameover !== undefined) {
       winner = <div id="winner">Winner: {this.props.ctx.gameover}</div>;
     }
-    console.log('rendering: ' + this.props.playerID)
+    console.log('rendering: ' + this.props.playerID);
     if (this.props.G.pathinks !== null && this.props.playerID == 1) {
-      console.log('UPDATING and player 1')
+      console.log('UPDATING and player 1');
       this.pathinks = this.importPathInks(this.props.G.pathinks);
     }
 
     let player = null;
     if (this.props.playerID !== null) {
-
       player = <div id="player">Player: {this.props.playerID}</div>;
     }
 
@@ -280,7 +363,7 @@ class Board extends React.Component {
         </div>
         <button
           className="w3-btn w3-ripple w3-green"
-          onClick={() => this.exportPathInks()}
+          onClick={() => this.submit()}
         >
           Submit
         </button>
