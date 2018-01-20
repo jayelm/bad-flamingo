@@ -10,7 +10,6 @@ import React from 'react';
 import paper from 'paper';
 import PropTypes from 'prop-types';
 import './board.css';
-import './w3.css';
 import predict from './keras_model.js';
 
 const REAL_PLAYER_NAMES = [
@@ -160,7 +159,7 @@ class Board extends React.Component {
       // New Paper Path and Settings
 
       this.path = new this.paper.Path();
-      this.path.strokeColor = 'black';
+      this.path.strokeColor = '#5C604D';
       this.path.strokeWidth = 7;
       this.paths.push(this.path);
       // Get Time [ms] for each Guess (needed for accurate Google AI Guessing)
@@ -429,20 +428,35 @@ class Board extends React.Component {
 
     let phase = <div id="phase">Phase: {this.props.ctx.phase}</div>
 
-    let player = null;
+    let playerPrompt = null;
     if (this.props.playerID !== null) {
-      player = <div id="player">You are the <strong>{REAL_PLAYER_NAMES[this.props.playerID]}</strong>
-        </div>;
+      if (this.props.playerID == "0") {
+        playerPrompt = (
+          <div id="player"><p>You are the <strong>drawer</strong>.
+          Draw a <strong>{this.props.G.topic}</strong>.
+          </p>
+          </div>
+        )
+      } else if (this.props.playerID == "1") {
+        playerPrompt = (
+          <div id="player"><p>You are the <strong>traitor</strong>.
+          Wait for the drawer.</p>
+          </div>
+        )
+      } else if (this.props.playerID == "2") {
+        playerPrompt = (
+          <div id="player"><p>You are the <strong>guesser</strong>.
+          Wait for the drawer.</p>
+          </div>
+        )
+      } else {
+        playerPrompt = <div id="player">UNKNOWN PLAYER</div>
+      }
+
     }
     let game = null;
     if (this.props.gameID !== null) {
       game = <div id="game">Game: {this.props.gameID}</div>;
-    }
-    let topic = null;
-
-    // Player 0 (drawer) logic
-    if (this.props.playerID !== null && this.props.playerID === "0") {
-      topic = <div id="topic">Draw a <strong>{this.props.G.topic}</strong></div>;
     }
 
     let guess_form = null;
@@ -453,7 +467,7 @@ class Board extends React.Component {
         <p>Your guess:</p><br></br>
         <input ref={guess => {this.guess = guess;}}
           id="df" type="text" name="guess"></input>
-        <button className="w3-btn w3-ripple w3-red" id="guessSubmit"
+        <button className="submitButton" id="guessSubmit"
          onClick={() => this.submitGuess()}>Submit Guess</button>
          </div>
       )
@@ -461,14 +475,7 @@ class Board extends React.Component {
 
     return (
       <div>
-        <button
-          className="w3-btn w3-ripple w3-red"
-          id="btnClear"
-          onClick={() => this.clearDrawing()}
-        >
-          Reset
-        </button>
-        {topic}
+        {playerPrompt}
         <div id="wrapper">
           <canvas
             ref={canvas => {
@@ -477,8 +484,9 @@ class Board extends React.Component {
           />
           <br />
         </div>
+        <div className="buttonHolder">
         <button
-          className="w3-btn w3-ripple w3-green"
+          className="submitButton"
           onClick={() => this.submit()}
           ref={submitButton => {
               this.submitButton = submitButton;
@@ -486,8 +494,15 @@ class Board extends React.Component {
         >
           Submit
         </button>
+        <button
+          className="resetButton"
+          id="btnClear"
+          onClick={() => this.clearDrawing()}
+        >
+          Reset
+        </button>
+        </div>
 
-        {player}
         {game}
         {phase}
         {lastResult}

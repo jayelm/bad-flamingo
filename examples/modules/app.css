@@ -6,21 +6,38 @@
  * https://opensource.org/licenses/MIT.
  */
 
+ body {
+   background-color: #FFBAD2;
+ }
+
+ canvas {
+   background-color: white;
+ }
+
 * {
-  box-sizing: content-box;
+  font-size: 20px;
   font-family: "Indie Flower", sans-serif;
+  box-sizing: content-box;
+  color: #5C604D;
 }
 
 h1.title {
+  font-size: 40px;
   font-family: "Indie Flower";
 }
 
 .drawWrapper {
     width: 100%;
+    text-align: center;
+}
+
+.headerSection {
+  width: 100%;
+  text-align: center;
 }
 
 .client {
-  padding: 25px;
+  padding: 0px;
 }
 
 .content {
