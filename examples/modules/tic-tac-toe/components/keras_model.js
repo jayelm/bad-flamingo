@@ -6,7 +6,7 @@ const labels = ["alarm clock", "ant", "anvil", "arm", "basketball", "belt", "bir
 function argmax(xs) {
   let max = -Infinity
   let max_n = -1
-  for (let i=0; i<xs.length; i++) {
+  for (let i = 0; i < xs.length; i++) {
     if (xs[i] > max) {
       max = xs[i]
       max_n = i
@@ -25,8 +25,8 @@ function predict(img) {
     .ready()
     .then(() => {
       let data = []
-      for (let i=0; i<28; i++) {
-        for (let j=0; j<28; j++) data.push(0);
+      for (let i = 0; i < 28; i++) {
+        for (let j = 0; j < 28; j++) data.push(0);
       }
       const inputData = {
         input_1: new Float32Array(data)
