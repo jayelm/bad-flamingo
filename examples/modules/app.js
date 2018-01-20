@@ -18,7 +18,7 @@ import './app.css';
 const App = () => (
   <Router history={browserHistory}>
     <main>
-      <h1>Bad Flamingo</h1>
+      <h1 className="title">Bad Flamingo</h1>
       <section className="drawWrapper">
         <Route key="1" exact path="/:gameid/:playerid" component={Multiplayer}/>
       </section>

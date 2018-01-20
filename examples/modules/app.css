@@ -8,6 +8,11 @@
 
 * {
   box-sizing: content-box;
+  font-family: "Indie Flower", sans-serif;
+}
+
+h1.title {
+  font-family: "Indie Flower";
 }
 
 .drawWrapper {
