@@ -104,6 +104,7 @@
     "webpack": "^3.5.5"
   },
   "dependencies": {
+    "keras-js": "^1.0.2",
     "koa": "^2.3.0",
     "koa-router": "^7.2.1",
     "koa-socket": "^4.4.0",
