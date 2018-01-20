@@ -10,6 +10,10 @@
   box-sizing: content-box;
 }
 
+.drawWrapper {
+    width: 500px;
+}
+
 .client {
   padding: 50px;
 }

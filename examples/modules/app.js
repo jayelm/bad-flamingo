@@ -18,7 +18,7 @@ import './app.css';
 const App = () => (
   <Router>
     <main>
-      <section>
+      <section className="drawWrapper">
         {_.flattenDeep(routes.map(route => route.routes)).map((route, idx) => (
           <Route
             key={idx}
