@@ -6,14 +6,9 @@
  * https://opensource.org/licenses/MIT.
  */
 
- var _ = require('lodash');
+ const NN_TOP_GUESSES = 10;
 
- const NN_TOP_GUESSES = 3;
-
- const TOPICS = [
-   'bird',
-   'circle',
- ]
+import TOPICS from './topics';
 
 import { Game, TurnOrder } from 'boardgame.io/core';
 
