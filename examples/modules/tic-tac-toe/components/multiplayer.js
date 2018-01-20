@@ -25,15 +25,7 @@ const Multiplayer = (props) => {
     return (
       <div>
       <p>Invalid playerID</p>
-      <p>Must be 0 or 1 or 2</p>
-      </div>
-    )
-  }
-  if (! (gameid === "foo" || gameid === "bar")) {
-    return (
-      <div>
-      <p>Invalid gameid (for now)</p>
-      <p>Must be foo or bar</p>
+      <p>Must be 0 (drawer), 1 (traitor), or 2 (guesser)</p>
       </div>
     )
   }

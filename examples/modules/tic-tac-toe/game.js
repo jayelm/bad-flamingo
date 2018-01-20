@@ -8,8 +8,7 @@
 
  const TOPICS = [
    'bird',
-   'dolphin',
-   'tomato'
+   'circle',
  ]
 
 import { Game, TurnOrder } from 'boardgame.io/core';
@@ -49,14 +48,20 @@ const TicTacToe = Game({
       console.log(G);
       // Need player guess and nn guess to be set
       if (G.playerGuess !== null && G.nnGuess !== null) {
+        var win = null;
         if (G.playerGuess === G.topic && G.nnGuess === G.topic) {
-          return "Both guessed correctly"
+          win = "both";
         } else if (G.playerGuess === G.topic) {
-          return "Player guessed correctly"
+          win = "guesser";
         } else if (G.nnGuess === G.topic) {
-          return "AI guessed correctly"
+          win = "ai";
         } else {
-          return "no one guessed correctly"
+          win = "neither";
+        }
+        return {
+          win: win,
+          playerGuess: G.playerGuess,
+          nnGuess: G.nnGuess
         }
       }
     },

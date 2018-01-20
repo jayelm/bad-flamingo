@@ -355,7 +355,13 @@ class Board extends React.Component {
   render() {
     let winner = null;
     if (this.props.ctx.gameover !== undefined) {
-      winner = <div id="winner">Winner: {this.props.ctx.gameover}</div>;
+      winner = (
+        <div id="results">
+        <div id="winner">Winner: {this.props.ctx.gameover.win}</div>
+        <div id="playerGuess">Player Guess: {this.props.ctx.gameover.playerGuess}</div>
+        <div id="nnGuess">AI Guess: {this.props.ctx.gameover.nnGuess}</div>
+        </div>
+      )
     }
     if (this.props.G.editedPathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.editedPathinks);
