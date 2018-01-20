@@ -66,6 +66,36 @@ class Board extends React.Component {
     return pathinks;
   }
 
+  exportPathInks(pathinks) {
+    var pathsexport = Object.keys(pathinks);
+
+    pathsexport = pathsexport.map(path => {
+      var simplepath = JSON.parse(path);
+      simplepath[1]['segments'] = simplepath[1]['segments'].map(segment => {
+        return [
+          segment[0] / this.canvas.offsetWidth,
+          segment[1] / this.canvas.offsetHeight,
+        ];
+      });
+      return JSON.stringify(simplepath);
+    });
+    var inks = Object.values(pathinks);
+    inks = inks.map(ink => {
+      ink[0] = ink[0].map(x => {
+        return x / this.canvas.offsetWidth;
+      });
+      ink[1] = ink[1].map(y => {
+        return y / this.canvas.offsetHeight;
+      });
+      return ink;
+    });
+    return ((o, a, b) => a.forEach((c, i) => (o[c] = b[i])) || o)(
+      {},
+      pathsexport,
+      inks
+    );
+  }
+
   drawInk() {
     this.clonepathinks = JSON.parse(JSON.stringify(this.pathinks));
     if (this.paths) {
@@ -217,7 +247,7 @@ class Board extends React.Component {
   }
 
   submitTraitor() {
-    this.pathinks = this.clonepathinks
+    // this.pathinks = this.clonepathinks
     console.log('clone')
     console.log(this.clonepathinks)
     console.log('real')
@@ -292,7 +322,8 @@ class Board extends React.Component {
     );
     var p_title = 'BEST GUESS: ' + this.scores[0][0] + ' (' + this.scores[0][1] + ')';
     console.log(p_title)
-    this.props.moves.submitTraitor([this.clonepathinks, this.scores[0][0]])
+    console.log('exporting')
+    this.props.moves.submitTraitor([this.exportPathInks(this.clonepathinks), this.scores[0][0]])
     // Add New Guess Scores to Score History
     // updateScoresHistory();
     // Plot Guess Scores
@@ -343,6 +374,8 @@ class Board extends React.Component {
       winner = <div id="winner">Winner: {this.props.ctx.gameover}</div>;
     }
     if (this.props.G.editedPathinks !== null) {
+      console.log(this.props.G.editedPathinks)
+      console.log(this.props.G.pathinks)
       this.pathinks = this.importPathInks(this.props.G.editedPathinks);
     } else if (this.props.G.pathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.pathinks);
@@ -384,7 +417,7 @@ class Board extends React.Component {
           id="btnClear"
           onClick={() => this.clearDrawing()}
         >
-          clear
+          Reset
         </button>
         {topic}
         <div id="wrapper">
