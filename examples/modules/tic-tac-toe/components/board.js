@@ -10,6 +10,7 @@ import React from 'react';
 import paper from 'paper';
 import PropTypes from 'prop-types';
 import './board.css';
+import './w3.css';
 import predict from './keras_model.js';
 
 const REAL_PLAYER_NAMES = [
@@ -32,6 +33,8 @@ class Board extends React.Component {
       this.mountDrawer();
     } else if (this.props.playerID == 1) {
       this.mountTraitor();
+    } else if (this.props.playerID == 2) {
+      this.mountGuesser();
     }
   }
 
@@ -40,6 +43,8 @@ class Board extends React.Component {
       // this.mountDrawer();
     } else if (this.props.playerID == 1) {
       this.updateTraitor();
+    } else if (this.props.playerID == 2) {
+      this.updateTraitor(); // Same action
     }
   }
   importPathInks(pathinks) {
@@ -73,6 +78,36 @@ class Board extends React.Component {
     return pathinks;
   }
 
+  exportPathInks(pathinks) {
+    var pathsexport = Object.keys(pathinks);
+
+    pathsexport = pathsexport.map(path => {
+      var simplepath = JSON.parse(path);
+      simplepath[1]['segments'] = simplepath[1]['segments'].map(segment => {
+        return [
+          segment[0] / this.canvas.offsetWidth,
+          segment[1] / this.canvas.offsetHeight,
+        ];
+      });
+      return JSON.stringify(simplepath);
+    });
+    var inks = Object.values(pathinks);
+    inks = inks.map(ink => {
+      ink[0] = ink[0].map(x => {
+        return x / this.canvas.offsetWidth;
+      });
+      ink[1] = ink[1].map(y => {
+        return y / this.canvas.offsetHeight;
+      });
+      return ink;
+    });
+    return ((o, a, b) => a.forEach((c, i) => (o[c] = b[i])) || o)(
+      {},
+      pathsexport,
+      inks
+    );
+  }
+
   drawInk() {
     this.clonepathinks = JSON.parse(JSON.stringify(this.pathinks));
     if (this.paths) {
@@ -90,6 +125,12 @@ class Board extends React.Component {
   }
 
   mountTraitor() {
+    paper.install(this);
+    this.paper = new paper.PaperScope();
+    this.paper.setup(this.canvas); // Setup Paper #canvas
+  }
+
+  mountGuesser() {
     paper.install(this);
     this.paper = new paper.PaperScope();
     this.paper.setup(this.canvas); // Setup Paper #canvas
@@ -216,6 +257,7 @@ class Board extends React.Component {
   }
 
   submit() {
+    this.submitButton.disabled = true;
     if (this.props.playerID == 0) {
       this.submitDrawer();
     } else if (this.props.playerID == 1) {
@@ -224,11 +266,8 @@ class Board extends React.Component {
   }
 
   submitTraitor() {
-    this.pathinks = this.clonepathinks
-    console.log('clone')
-    console.log(this.clonepathinks)
-    console.log('real')
-    console.log(this.pathinks)
+    // this.pathinks = this.clonepathinks
+
     this.checkQuickDraw()
 
   }
@@ -299,14 +338,13 @@ class Board extends React.Component {
     );
     var p_title = 'BEST GUESS: ' + this.scores[0][0] + ' (' + this.scores[0][1] + ')';
     console.log(p_title)
-    this.props.moves.submitTraitor([this.clonepathinks, this.scores[0][0]])
+    this.props.moves.submitTraitor([this.exportPathInks(this.clonepathinks), this.scores])
     // Add New Guess Scores to Score History
     // updateScoresHistory();
     // Plot Guess Scores
   }
 
   submitGuess() {
-    console.log(this.guess.value);
     if (this.guess !== null) {
       this.props.moves.submitGuess(this.guess.value);
     }
@@ -347,7 +385,13 @@ class Board extends React.Component {
   render() {
     let winner = null;
     if (this.props.ctx.gameover !== undefined) {
-      winner = <div id="winner">Winner: {this.props.ctx.gameover}</div>;
+      winner = (
+        <div id="results">
+        <div id="winner">Winner: {this.props.ctx.gameover.win}</div>
+        <div id="playerGuess">Player Guess: {this.props.ctx.gameover.playerGuess}</div>
+        <div id="nnGuess">AI Guess: {this.props.ctx.gameover.nnGuess}</div>
+        </div>
+      )
     }
     if (this.props.G.editedPathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.editedPathinks);
@@ -394,7 +438,7 @@ class Board extends React.Component {
           id="btnClear"
           onClick={() => this.clearDrawing()}
         >
-          clear
+          Reset
         </button>
         {topic}
         <div id="wrapper">
@@ -408,6 +452,9 @@ class Board extends React.Component {
         <button
           className="w3-btn w3-ripple w3-green"
           onClick={() => this.submit()}
+          ref={submitButton => {
+              this.submitButton = submitButton;
+            }}
         >
           Submit
         </button>

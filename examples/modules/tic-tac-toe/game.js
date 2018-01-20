@@ -8,17 +8,13 @@
 
  const TOPICS = [
    'bird',
-   'dolphin',
-   'tomato'
+   'circle',
  ]
 
-import { Game } from 'boardgame.io/core';
+import { Game, TurnOrder } from 'boardgame.io/core';
 
 function IsVictory(G) {
-  if (G.playerGuess !== null && G.nnGuess === G.topic) {
-    return true;
-  }
-  return false;
+
 }
 
 const TicTacToe = Game({
@@ -29,7 +25,7 @@ const TicTacToe = Game({
     topic: TOPICS[Math.floor(Math.random() * TOPICS.length)],
     playerGuess: null,
     editedPathinks: null,
-    nnGuess: null
+    nnGuesses: null
   }),
 
   moves: {
@@ -37,18 +33,36 @@ const TicTacToe = Game({
       return { ...G, pathinks };
     },
     submitGuess(G, ctx, playerGuess) {
+      console.log('submit guess move played!');
+      console.log({ ...G, playerGuess });
       return { ...G, playerGuess };
     },
-    submitTraitor(G, ctx, [editedPathinks, nnGuess]) {
-      return { ...G, editedPathinks, nnGuess };
+    submitTraitor(G, ctx, [editedPathinks, nnGuesses]) {
+      return { ...G, editedPathinks, nnGuesses};
     }  },
 
   flow: {
     movesPerTurn: 1,
 
     endGameIf: (G, ctx) => {
-      if (IsVictory(G)) {
-        return ctx.currentPlayer;
+      console.log(G);
+      // Need player guess and nn guess to be set
+      if (G.playerGuess !== null && G.nnGuess !== null) {
+        var win = null;
+        if (G.playerGuess === G.topic && G.nnGuess === G.topic) {
+          win = "both";
+        } else if (G.playerGuess === G.topic) {
+          win = "guesser";
+        } else if (G.nnGuess === G.topic) {
+          win = "ai";
+        } else {
+          win = "neither";
+        }
+        return {
+          win: win,
+          playerGuess: G.playerGuess,
+          nnGuess: G.nnGuess
+        }
       }
     },
 
@@ -56,12 +70,14 @@ const TicTacToe = Game({
       {
         name: 'draw phase',
         allowedMoves: ['submitDraw'],
-        endPhaseIf: G => G.pathinks !== null
+        endPhaseIf: G => G.pathinks !== null,
+        turnOrder: TurnOrder.ANY
       },
       {
         name: 'play phase',
         allowedMoves: ['submitGuess', 'submitTraitor'],
-        endPhaseIf: G => G.playerGuess !== null && G.nnGuess !== null
+        endPhaseIf: G => G.playerGuess !== null && G.nnGuess !== null,
+        turnOrder: TurnOrder.ANY
       },
     ],
   },
