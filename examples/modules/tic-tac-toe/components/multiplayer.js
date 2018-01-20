@@ -21,11 +21,11 @@ const App = Client({
 const Multiplayer = (props) => {
   var playerid = props.match.params.playerid;
   var gameid = props.match.params.gameid;
-  if (! (playerid === "0" || playerid === "1")) {
+  if (! (playerid === "0" || playerid === "1" || playerid === "2")) {
     return (
       <div>
       <p>Invalid playerID</p>
-      <p>Must be 0 or 1</p>
+      <p>Must be 0 or 1 or 2</p>
       </div>
     )
   }
