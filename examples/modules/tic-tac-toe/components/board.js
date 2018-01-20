@@ -99,6 +99,7 @@ class Board extends React.Component {
   }
 
   mountDrawer() {
+    this.guess = null;
     this.timer = 0;
     paper.install(this);
     this.initInk(); // Initialize Ink array ()
@@ -295,6 +296,13 @@ class Board extends React.Component {
     // Plot Guess Scores
   }
 
+  submitGuess() {
+    console.log(this.guess.value);
+    if (this.guess !== null) {
+      this.props.moves.submitGuess(this.guess.value);
+    }
+  }
+
   submitDrawer() {
     this.newInk();
     var pathsexport = this.paths.map(path => path.exportJSON());
@@ -333,15 +341,38 @@ class Board extends React.Component {
     if (this.props.ctx.gameover !== undefined) {
       winner = <div id="winner">Winner: {this.props.ctx.gameover}</div>;
     }
-    console.log('rendering: ' + this.props.playerID);
-    if (this.props.G.pathinks !== null && this.props.playerID == 1) {
-      console.log('UPDATING and player 1');
+
+    if (this.props.G.pathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.pathinks);
     }
 
     let player = null;
     if (this.props.playerID !== null) {
       player = <div id="player">Player: {this.props.playerID}</div>;
+    }
+    let game = null;
+    if (this.props.gameID !== null) {
+      game = <div id="game">Game: {this.props.gameID}</div>;
+    }
+    let topic = null;
+
+    // Player 0 (drawer) logic
+    if (this.props.playerID !== null && this.props.playerID === "0") {
+      topic = <div id="topic">Please draw a {this.props.G.topic}.</div>;
+    }
+
+    let guess_form = null;
+    // Player 1 (guesser) logic (TODO: don't forget about traitor)
+    if (this.props.playerID !== null && this.props.playerID === "2") {
+      guess_form = (
+        <div id="guessform">
+        <p>Your guess:</p><br></br>
+        <input ref={guess => {this.guess = guess;}}
+          id="df" type="text" name="guess"></input>
+        <button className="w3-btn w3-ripple w3-red" id="guessSubmit"
+         onClick={() => this.submitGuess()}>Submit Guess</button>
+         </div>
+      )
     }
 
     return (
@@ -353,6 +384,7 @@ class Board extends React.Component {
         >
           clear
         </button>
+        {topic}
         <div id="wrapper">
           <canvas
             ref={canvas => {
@@ -367,8 +399,11 @@ class Board extends React.Component {
         >
           Submit
         </button>
+
         {player}
+        {game}
         {winner}
+        {guess_form}
       </div>
     );
   }

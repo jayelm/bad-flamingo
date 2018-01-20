@@ -6,9 +6,18 @@
  * https://opensource.org/licenses/MIT.
  */
 
+ const TOPICS = [
+   'bird',
+   'dolphin',
+   'tomato'
+ ]
+
 import { Game } from 'boardgame.io/core';
 
-function IsVictory(canvas) {
+function IsVictory(G) {
+  if (G.guess !== null && G.guess === G.topic) {
+    return true;
+  }
   return false;
 }
 
@@ -17,20 +26,24 @@ const TicTacToe = Game({
 
   setup: () => ({
     pathinks: null,
+    topic: TOPICS[Math.floor(Math.random() * TOPICS.length)],
+    guess: null
   }),
 
   moves: {
     submitDraw(G, ctx, pathinks) {
-      console.log('submitDraw');
       return { ...G, pathinks };
     },
+    submitGuess(G, ctx, guess) {
+      return { ...G, guess };
+    }
   },
 
   flow: {
-    movesPerTurn: 5,
+    movesPerTurn: 1,
 
     endGameIf: (G, ctx) => {
-      if (IsVictory(G.pathinks)) {
+      if (IsVictory(G)) {
         return ctx.currentPlayer;
       }
     },
