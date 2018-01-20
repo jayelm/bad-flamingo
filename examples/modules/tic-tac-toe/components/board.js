@@ -218,7 +218,9 @@ class Board extends React.Component {
 
   submitTraitor() {
     this.pathinks = this.clonepathinks
+    console.log('clone')
     console.log(this.clonepathinks)
+    console.log('real')
     console.log(this.pathinks)
     this.checkQuickDraw()
 
@@ -340,8 +342,9 @@ class Board extends React.Component {
     if (this.props.ctx.gameover !== undefined) {
       winner = <div id="winner">Winner: {this.props.ctx.gameover}</div>;
     }
-
-    if (this.props.G.pathinks !== null) {
+    if (this.props.G.editedPathinks !== null) {
+      this.pathinks = this.importPathInks(this.props.G.editedPathinks);
+    } else if (this.props.G.pathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.pathinks);
     }
 
