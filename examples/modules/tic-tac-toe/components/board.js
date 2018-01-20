@@ -383,16 +383,39 @@ class Board extends React.Component {
   }
 
   render() {
+    if (this.round === undefined) {
+      this.round = 0;
+    }
     let winner = null;
     if (this.props.ctx.gameover !== undefined) {
       winner = (
         <div id="results">
-        <div id="winner">Winner: {this.props.ctx.gameover.win}</div>
-        <div id="playerGuess">Player Guess: {this.props.ctx.gameover.playerGuess}</div>
-        <div id="nnGuess">AI Guess: {JSON.stringify(this.props.ctx.gameover.nnGuesses)}</div>
+        <div id="winner">Winner: {this.props.ctx.gameover}</div>
         </div>
       )
     }
+
+    if (this.props.G.round !== this.round) {
+      console.log('setting the round');
+      console.log(this.props.G.round);
+      console.log(this.round);
+      this.round = this.props.G.round;
+      this.submitButton.disabled = false;
+    }
+
+    var scores = (
+      <div id="scores">
+      <div id="playerScore">Player Score: {this.props.G.playerScore}</div>
+      <div id="nnScore">AI Score: {this.props.G.aiScore}</div>
+      </div>
+    )
+
+    var lastResult = (
+      <div id="lastResult">
+      <div id="playerGuess">Player Guess: {this.props.G.playerGuess}</div>
+      <div id="nnGuess">AI Guess: {JSON.stringify(this.props.G.nnGuesses)}</div>
+      </div>
+    )
     if (this.props.G.editedPathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.editedPathinks);
     } else if (this.props.G.pathinks !== null) {
@@ -462,6 +485,8 @@ class Board extends React.Component {
         {player}
         {game}
         {phase}
+        {lastResult}
+        {scores}
         {winner}
         {guess_form}
       </div>
