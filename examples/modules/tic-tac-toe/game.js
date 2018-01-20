@@ -27,7 +27,9 @@ const TicTacToe = Game({
   setup: () => ({
     pathinks: null,
     topic: TOPICS[Math.floor(Math.random() * TOPICS.length)],
-    guess: null
+    guess: null,
+    editedGuess: null,
+    googleWord: null
   }),
 
   moves: {
@@ -36,6 +38,9 @@ const TicTacToe = Game({
     },
     submitGuess(G, ctx, guess) {
       return { ...G, guess };
+    },
+    submitTraitor(G, ctx, [editedGuess, googleWord]) {
+      return { ...G, editedGuess, googleWord };
     }
   },
 

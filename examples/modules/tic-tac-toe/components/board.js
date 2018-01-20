@@ -37,7 +37,6 @@ class Board extends React.Component {
   }
   importPathInks(pathinks) {
     var pathsexport = Object.keys(pathinks);
-    console.log(pathsexport);
 
     pathsexport = pathsexport.map(path => {
       var simplepath = JSON.parse(path);
@@ -59,7 +58,6 @@ class Board extends React.Component {
       });
       return ink;
     });
-    console.log(inks);
     pathinks = ((o, a, b) => a.forEach((c, i) => (o[c] = b[i])) || o)(
       {},
       pathsexport,
@@ -69,22 +67,18 @@ class Board extends React.Component {
   }
 
   drawInk() {
-    console.log('drawInk: ' + this.props.playerID);
-    console.log(this.pathinks)
     this.clonepathinks = JSON.parse(JSON.stringify(this.pathinks));
     if (this.paths) {
       this.paths.forEach(path => path.remove())
     }
     this.paths = [];
     Object.keys(this.pathinks).forEach(thispath => {
-      console.log(thispath);
       var i = this.paths.push(new this.paper.Path()) - 1;
       this.paths[i].importJSON(thispath);
       this.paths[i].onClick = event => {
         this.paths[i].remove();
         delete this.clonepathinks[thispath];
       };
-      console.log(this.paper);
     });
   }
 
@@ -115,7 +109,6 @@ class Board extends React.Component {
 
     // Paper Tool Mouse Down Event
     tool.onMouseDown = event => {
-      console.log(this.paths);
       // New Paper Path and Settings
 
       this.path = new this.paper.Path();
@@ -224,6 +217,9 @@ class Board extends React.Component {
   }
 
   submitTraitor() {
+    this.pathinks = this.clonepathinks
+    console.log(this.clonepathinks)
+    console.log(this.pathinks)
     this.checkQuickDraw()
 
   }
@@ -294,6 +290,7 @@ class Board extends React.Component {
     );
     var p_title = 'BEST GUESS: ' + this.scores[0][0] + ' (' + this.scores[0][1] + ')';
     console.log(p_title)
+    this.props.moves.submitTraitor([this.clonepathinks, this.scores[0][0]])
     // Add New Guess Scores to Score History
     // updateScoresHistory();
     // Plot Guess Scores
@@ -334,7 +331,6 @@ class Board extends React.Component {
       pathsexport,
       this.inks
     );
-    console.log(JSON.stringify(pathinks));
     this.props.moves.submitDraw(pathinks);
     // this.props.events.endTurn();
   }
