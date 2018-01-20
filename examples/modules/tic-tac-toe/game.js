@@ -74,12 +74,19 @@ const TicTacToe = Game({
   moves: {
     submitDraw(G, ctx, pathinks) {
       console.log("submitDraw");
-      return { ...G, pathinks };
+      return {
+        ...G,
+        pathinks: pathinks,
+        // TODO: Do we need this copy?
+        editedPathinks: JSON.parse(JSON.stringify(pathinks))
+      };
     },
     submitGuess(G, ctx, playerGuess) {
       console.log("submitGuess");
       return { ...G, playerGuess };
     },
+    // TODO: Add option where traitor just affirms everything
+    // (that's called playing w/o traitor)
     submitTraitor(G, ctx, [editedPathinks, nnGuesses]) {
       console.log("submitTraitor");
       return { ...G, editedPathinks, nnGuesses};

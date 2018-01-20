@@ -405,6 +405,10 @@ class Board extends React.Component {
       // New game
       this.round = this.props.G.round;
       this.submitButton.disabled = false;
+      // Clear canvas for drawer only (other players can continue viewing)
+      if (this.props.playerID === "0") {
+        this.clearDrawing();
+      }
     }
 
     var scores = (
@@ -415,7 +419,9 @@ class Board extends React.Component {
     )
 
 
-    if (this.props.G.editedPathinks !== null) {
+    if (this.props.G.editedPathinks !== null &&
+        this.props.playerID === 1) {
+          // Traitor only messes around with editedPathInks
       this.pathinks = this.importPathInks(this.props.G.editedPathinks);
     } else if (this.props.G.pathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.pathinks);
@@ -440,7 +446,7 @@ class Board extends React.Component {
     }
 
     let guess_form = null;
-    // Player 1 (guesser) logic (TODO: don't forget about traitor)
+    // Player 2 (guesser) logic (TODO: don't forget about traitor)
     if (this.props.playerID !== null && this.props.playerID === "2") {
       guess_form = (
         <div id="guessform">
