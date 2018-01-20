@@ -10,6 +10,7 @@ import React from 'react';
 import paper from 'paper';
 import PropTypes from 'prop-types';
 import './board.css';
+import './w3.css';
 
 const REAL_PLAYER_NAMES = [
   'drawer',
@@ -74,6 +75,36 @@ class Board extends React.Component {
       inks
     );
     return pathinks;
+  }
+
+  exportPathInks(pathinks) {
+    var pathsexport = Object.keys(pathinks);
+
+    pathsexport = pathsexport.map(path => {
+      var simplepath = JSON.parse(path);
+      simplepath[1]['segments'] = simplepath[1]['segments'].map(segment => {
+        return [
+          segment[0] / this.canvas.offsetWidth,
+          segment[1] / this.canvas.offsetHeight,
+        ];
+      });
+      return JSON.stringify(simplepath);
+    });
+    var inks = Object.values(pathinks);
+    inks = inks.map(ink => {
+      ink[0] = ink[0].map(x => {
+        return x / this.canvas.offsetWidth;
+      });
+      ink[1] = ink[1].map(y => {
+        return y / this.canvas.offsetHeight;
+      });
+      return ink;
+    });
+    return ((o, a, b) => a.forEach((c, i) => (o[c] = b[i])) || o)(
+      {},
+      pathsexport,
+      inks
+    );
   }
 
   drawInk() {
@@ -225,6 +256,7 @@ class Board extends React.Component {
   }
 
   submit() {
+    this.submitButton.disabled = true;
     if (this.props.playerID == 0) {
       this.submitDrawer();
     } else if (this.props.playerID == 1) {
@@ -233,7 +265,7 @@ class Board extends React.Component {
   }
 
   submitTraitor() {
-    this.pathinks = this.clonepathinks
+    // this.pathinks = this.clonepathinks
     console.log('clone')
     console.log(this.clonepathinks)
     console.log('real')
@@ -306,9 +338,10 @@ class Board extends React.Component {
     this.scores = JSON.parse(
       res_j[1][0][3].debug_info.match(/SCORESINKS: (.+) Combiner:/)[1]
     );
-    var p_title = 'BEST GUESS: ' + this.scores[0][0] + ' (' + this.scores[0][1] + ')';
+    var p_title = 'BEST GUESS: ' + this.scores[0][0] + ' (' + this.Scores[0][1] + ')';
     console.log(p_title)
-    this.props.moves.submitTraitor([this.clonepathinks, this.scores[0][0]])
+    console.log('exporting')
+    this.props.moves.submitTraitor([this.exportPathInks(this.clonepathinks), this.scores[0][0]])
     // Add New Guess Scores to Score History
     // updateScoresHistory();
     // Plot Guess Scores
@@ -364,6 +397,8 @@ class Board extends React.Component {
       )
     }
     if (this.props.G.editedPathinks !== null) {
+      console.log(this.props.G.editedPathinks)
+      console.log(this.props.G.pathinks)
       this.pathinks = this.importPathInks(this.props.G.editedPathinks);
     } else if (this.props.G.pathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.pathinks);
@@ -408,7 +443,7 @@ class Board extends React.Component {
           id="btnClear"
           onClick={() => this.clearDrawing()}
         >
-          clear
+          Reset
         </button>
         {topic}
         <div id="wrapper">
@@ -422,6 +457,9 @@ class Board extends React.Component {
         <button
           className="w3-btn w3-ripple w3-green"
           onClick={() => this.submit()}
+          ref={submitButton => {
+              this.submitButton = submitButton;
+            }}
         >
           Submit
         </button>
