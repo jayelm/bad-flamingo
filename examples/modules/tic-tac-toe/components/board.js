@@ -11,6 +11,12 @@ import paper from 'paper';
 import PropTypes from 'prop-types';
 import './board.css';
 
+const REAL_PLAYER_NAMES = [
+  'drawer',
+  'traitor',
+  'guesser'
+]
+
 class Board extends React.Component {
   static propTypes = {
     G: PropTypes.any.isRequired,
@@ -381,9 +387,12 @@ class Board extends React.Component {
       this.pathinks = this.importPathInks(this.props.G.pathinks);
     }
 
+    let phase = <div id="phase">Phase: {this.props.ctx.phase}</div>
+
     let player = null;
     if (this.props.playerID !== null) {
-      player = <div id="player">Player: {this.props.playerID}</div>;
+      player = <div id="player">You are the <strong>{REAL_PLAYER_NAMES[this.props.playerID]}</strong>
+        </div>;
     }
     let game = null;
     if (this.props.gameID !== null) {
@@ -393,7 +402,7 @@ class Board extends React.Component {
 
     // Player 0 (drawer) logic
     if (this.props.playerID !== null && this.props.playerID === "0") {
-      topic = <div id="topic">Please draw a {this.props.G.topic}.</div>;
+      topic = <div id="topic">Draw a <strong>{this.props.G.topic}</strong></div>;
     }
 
     let guess_form = null;
@@ -437,6 +446,7 @@ class Board extends React.Component {
 
         {player}
         {game}
+        {phase}
         {winner}
         {guess_form}
       </div>

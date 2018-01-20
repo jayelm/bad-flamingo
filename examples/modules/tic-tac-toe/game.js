@@ -15,7 +15,7 @@
 import { Game } from 'boardgame.io/core';
 
 function IsVictory(G) {
-  if (G.guess !== null && G.guess === G.topic) {
+  if (G.playerGuess !== null && G.nnGuess === G.topic) {
     return true;
   }
   return false;
@@ -27,22 +27,21 @@ const TicTacToe = Game({
   setup: () => ({
     pathinks: null,
     topic: TOPICS[Math.floor(Math.random() * TOPICS.length)],
-    guess: null,
+    playerGuess: null,
     editedPathinks: null,
-    googleWord: null
+    nnGuess: null
   }),
 
   moves: {
     submitDraw(G, ctx, pathinks) {
       return { ...G, pathinks };
     },
-    submitGuess(G, ctx, guess) {
-      return { ...G, guess };
+    submitGuess(G, ctx, playerGuess) {
+      return { ...G, playerGuess };
     },
-    submitTraitor(G, ctx, [editedPathinks, googleWord]) {
-      return { ...G, editedPathinks, googleWord };
-    }
-  },
+    submitTraitor(G, ctx, [editedPathinks, nnGuess]) {
+      return { ...G, editedPathinks, nnGuess };
+    }  },
 
   flow: {
     movesPerTurn: 1,
@@ -52,6 +51,19 @@ const TicTacToe = Game({
         return ctx.currentPlayer;
       }
     },
+
+    phases: [
+      {
+        name: 'draw phase',
+        allowedMoves: ['submitDraw'],
+        endPhaseIf: G => G.pathinks !== null
+      },
+      {
+        name: 'play phase',
+        allowedMoves: ['submitGuess', 'submitTraitor'],
+        endPhaseIf: G => G.playerGuess !== null && G.nnGuess !== null
+      },
+    ],
   },
 });
 
