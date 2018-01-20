@@ -18,15 +18,31 @@ const App = Client({
   multiplayer: true,
 });
 
-const Multiplayer = () => (
-  <div style={{ padding: 0 }}>
+const Multiplayer = (props) => {
+  var playerid = props.match.params.playerid;
+  var gameid = props.match.params.gameid;
+  if (! (playerid === "0" || playerid === "1")) {
+    return (
+      <div>
+      <p>Invalid playerID</p>
+      <p>Must be 0 or 1</p>
+      </div>
+    )
+  }
+  if (! (gameid === "foo" || gameid === "bar")) {
+    return (
+      <div>
+      <p>Invalid gameid (for now)</p>
+      <p>Must be foo or bar</p>
+      </div>
+    )
+  }
+  return (  <div style={{ padding: 0 }}>
     <div className="run">
-      <App gameID="multi" playerID="0" />
+      <App gameID={props.match.params.gameid} playerID={props.match.params.playerid} />
     </div>
-    <div className="run">
-      <App gameID="multi" playerID="1" />
-    </div>
-  </div>
-);
+  </div>);
+}
+
 
 export default Multiplayer;

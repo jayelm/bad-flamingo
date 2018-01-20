@@ -245,6 +245,8 @@ class Board extends React.Component {
   }
 
   render() {
+    console.log('props');
+    console.log(this.props);
     let winner = null;
     if (this.props.ctx.gameover !== undefined) {
       winner = <div id="winner">Winner: {this.props.ctx.gameover}</div>;

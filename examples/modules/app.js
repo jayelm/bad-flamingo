@@ -7,26 +7,19 @@
  */
 
 import React from 'react';
-import { HashRouter as Router, Route } from 'react-router-dom';
+import { HashRouter as Router, Route, browserHistory } from 'react-router-dom';
 import _ from 'lodash';
 import LiNavLink from './li-navlink';
 
-import routes from './routes';
+import Multiplayer from './tic-tac-toe/components/multiplayer.js';
 import './app.css';
 
 // CSS for the sidebar is taken from vue.css
 const App = () => (
-  <Router>
+  <Router history={browserHistory}>
     <main>
       <section className="drawWrapper">
-        {_.flattenDeep(routes.map(route => route.routes)).map((route, idx) => (
-          <Route
-            key={idx}
-            exact
-            path={route.path}
-            component={route.component}
-          />
-        ))}
+        <Route key="1" exact path="/:gameid/:playerid" component={Multiplayer}/>
       </section>
     </main>
   </Router>
