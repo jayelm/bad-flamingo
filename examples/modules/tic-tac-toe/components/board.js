@@ -395,10 +395,14 @@ class Board extends React.Component {
       )
     }
 
+    var lastResult = (
+      <div id="lastResult">
+      <div id="playerGuess">Last Round Player Guess: {this.props.G.lastPlayerGuess}</div>
+      <div id="nnGuess">Last Round AI Guess: {JSON.stringify(this.props.G.lastNNGuesses)}</div>
+      </div>
+    )
     if (this.props.G.round !== this.round) {
-      console.log('setting the round');
-      console.log(this.props.G.round);
-      console.log(this.round);
+      // New game
       this.round = this.props.G.round;
       this.submitButton.disabled = false;
     }
@@ -410,12 +414,7 @@ class Board extends React.Component {
       </div>
     )
 
-    var lastResult = (
-      <div id="lastResult">
-      <div id="playerGuess">Player Guess: {this.props.G.playerGuess}</div>
-      <div id="nnGuess">AI Guess: {JSON.stringify(this.props.G.nnGuesses)}</div>
-      </div>
-    )
+
     if (this.props.G.editedPathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.editedPathinks);
     } else if (this.props.G.pathinks !== null) {

@@ -66,7 +66,9 @@ const TicTacToe = Game({
     editedPathinks: null,
     nnGuesses: null,
     playerScore: 0,
-    aiScore: 0
+    aiScore: 0,
+    lastPlayerGuess: null,
+    lastNNGuesses: null
   }),
 
   moves: {
@@ -126,7 +128,9 @@ const TicTacToe = Game({
             pathinks: null,
             playerGuess: null,
             nnGuesses: null,
-            editedPathinks: null
+            editedPathinks: null,
+            lastPlayerGuess: winResult.playerGuess,
+            lastNNGuesses: winResult.nnGuesses
           };
         },
         turnOrder: TurnOrder.ANY

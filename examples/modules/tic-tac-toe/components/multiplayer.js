@@ -14,7 +14,7 @@ import Board from './board';
 const App = Client({
   game: TicTacToe,
   board: Board,
-  debug: true,
+  debug: false,
   multiplayer: true,
 });
 
