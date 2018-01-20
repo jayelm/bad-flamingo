@@ -16,13 +16,13 @@ const TicTacToe = Game({
   name: 'tic-tac-toe',
 
   setup: () => ({
-    canvas: null
+    pathinks: null
   }),
 
   moves: {
-    clickCell(G, ctx, id) {
-        var canvas = 3;
-        return { ...G, canvas };
+    submitDraw(G, ctx, pathinks) {
+        console.log('submitDraw')
+        return { ...G, pathinks };
     },
   },
 
@@ -30,7 +30,7 @@ const TicTacToe = Game({
     movesPerTurn: 1,
 
     endGameIf: (G, ctx) => {
-      if (IsVictory(G.canvas)) {
+      if (IsVictory(G.pathinks)) {
         return ctx.currentPlayer;
       }
     },

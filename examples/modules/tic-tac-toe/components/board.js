@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import paper from 'paper';
 import PropTypes from 'prop-types';
 import './board.css';
 
@@ -19,12 +20,185 @@ class Board extends React.Component {
     isActive: PropTypes.bool,
   };
 
-  submit = id => {
-      alert("Hello");
-    // if (this.isActive(id)) {
-      // this.props.moves.clickCell(id);
-    // }
-  };
+  componentDidMount() {
+    if (this.props.playerID == 0) {
+      this.mountDrawer();
+    } else if (this.props.playerID == 1) {
+      this.mountDrawer();
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.playerID == 0) {
+      // this.mountDrawer();
+    } else if (this.props.playerID == 1) {
+      this.updateTraitor();
+    }
+  }
+  importPathInks(pathinks) {
+    var pathsexport = Object.keys(pathinks);
+    console.log(pathsexport);
+
+    pathsexport = pathsexport.map(path => {
+      var simplepath = JSON.parse(path);
+      simplepath[1]['segments'] = simplepath[1]['segments'].map(segment => {
+        return [
+          segment[0] * this.canvas.offsetWidth,
+          segment[1] * this.canvas.offsetHeight,
+        ];
+      });
+      return JSON.stringify(simplepath);
+    });
+    var inks = Object.values(pathinks);
+    inks = inks.map(ink => {
+      ink[0] = ink[0].map(x => {
+        return x * this.canvas.offsetWidth;
+      });
+      ink[1] = ink[1].map(y => {
+        return y * this.canvas.offsetHeight;
+      });
+      return ink;
+    });
+    console.log(inks);
+    pathinks = ((o, a, b) => a.forEach((c, i) => (o[c] = b[i])) || o)(
+      {},
+      pathsexport,
+      inks
+    );
+    return pathinks;
+  }
+
+  drawInk() {
+    console.log('drawInk: ' + this.props.playerID)
+    var clonepathinks = JSON.parse(JSON.stringify(this.pathinks));
+    var paths = [];
+    Object.keys(clonepathinks).forEach(thispath => {
+      console.log(thispath);
+      var i = paths.push(new this.paper.Path()) - 1;
+      paths[i].importJSON(thispath);
+      paths[i].onClick = event => {
+        this.opacity = 0;
+        delete this.pathinks[thispath];
+      };
+      console.log(this.paper)
+    });
+  }
+
+  mountTraitor() {
+    paper.install(this);
+    this.paper = new paper.PaperScope();
+    this.paper.setup(this.canvas); // Setup Paper #canvas
+  }
+
+  updateTraitor() {
+    if (this.pathinks ){
+      this.drawInk()
+    }
+  }
+
+  mountDrawer() {
+    this.timer = 0;
+    paper.install(this);
+    this.initInk(); // Initialize Ink array ()
+    this.paper = new paper.PaperScope();
+
+    this.paper.setup(this.canvas); // Setup Paper #canvas
+
+    var tool = new this.paper.Tool(); // Inititalize Paper Tool
+
+    // Paper Tool Mouse Down Event
+    tool.onMouseDown = event => {
+      console.log(this.paths);
+      // New Paper Path and Settings
+
+      this.path = new this.paper.Path();
+      this.path.strokeColor = 'black';
+      this.path.strokeWidth = 7;
+      this.paths.push(this.path);
+      // Get Time [ms] for each Guess (needed for accurate Google AI Guessing)
+      var thisTimestamp = event.event.timeStamp;
+      if (this.timer === 0) {
+        this.timer = 1;
+        var time = 0;
+      } else {
+        var timeDelta = thisTimestamp - this.lastTimestamp;
+        var time = this.ink[2][this.ink[2].length - 1] + timeDelta;
+      }
+
+      // Get XY point from event w/ time [ms] to update Ink Array
+      this.newInk();
+      this.updateInk(event.point, time);
+      // Draw XY point to Paper Path
+      this.path.add(event.point);
+
+      // Reset Timestamps
+      this.lastTimestamp = thisTimestamp;
+    };
+
+    // Paper Tool Mouse Drag Event
+    tool.onMouseDrag = event => {
+      // Get Event Timestamp and Timestamp Delta
+      var thisTimestamp = event.event.timeStamp;
+      var timeDelta = thisTimestamp - this.lastTimestamp;
+      // Get new Time for Ink Array
+      var time = this.ink[2][this.ink[2].length - 1] + timeDelta;
+
+      // Get XY point from event w/ time [ms] to update Ink Array
+      this.updateInk(event.point, time);
+      // Draw XY point to Paper Path
+      this.path.add(event.point);
+
+      // Reset Timestamps
+      this.lastTimestamp = thisTimestamp;
+
+      // Check Google AI Quickdraw every 250 m/s
+      // if(thisTimestamp - lastTimestamp_check > 250){
+      //   checkQuickDraw();
+      //   lastTimestamp_check = thisTimestamp;
+      // }
+    };
+  }
+
+  newInk() {
+    if (
+      this.ink &&
+      this.ink[0] &&
+      this.ink[0].length &&
+      this.ink[0].length > 0
+    ) {
+      this.inks.push(this.ink);
+    }
+    this.ink = [[], [], []];
+  }
+  // Initialize Ink Array
+  initInk() {
+    this.paths = [];
+    // ink = [[],[],[]];
+    this.inks = [];
+  }
+
+  // Clear Paper Drawing Canvas
+  clearDrawing() {
+    // Remove Paper Path Layer
+    this.paper.project.activeLayer.removeChildren();
+    this.paper.view.draw();
+
+    // Init Ink Array
+    this.initInk();
+
+    // Resert Variables
+    this.timer = 0;
+
+    // Destroy Guess Chart
+    // chart.destroy();
+  }
+
+  // Update Ink Array w/ XY Point + Time
+  updateInk(point, time) {
+    this.ink[0].push(point.x);
+    this.ink[1].push(point.y);
+    this.ink[2].push(time);
+  }
 
   isActive(id) {
     if (!this.props.isActive) return false;
@@ -32,21 +206,79 @@ class Board extends React.Component {
     return true;
   }
 
+  exportPathInks() {
+    this.newInk();
+    var pathsexport = this.paths.map(path => path.exportJSON());
+
+    pathsexport = pathsexport.map(path => {
+      var simplepath = JSON.parse(path);
+      simplepath[1]['segments'] = simplepath[1]['segments'].map(segment => {
+        return [
+          segment[0] / this.canvas.offsetWidth,
+          segment[1] / this.canvas.offsetHeight,
+        ];
+      });
+      return JSON.stringify(simplepath);
+    });
+    this.inks = this.inks.map(ink => {
+      ink[0] = ink[0].map(x => {
+        return x / this.canvas.offsetWidth;
+      });
+      ink[1] = ink[1].map(y => {
+        return y / this.canvas.offsetHeight;
+      });
+      return ink;
+    });
+    var pathinks = ((o, a, b) => a.forEach((c, i) => (o[c] = b[i])) || o)(
+      {},
+      pathsexport,
+      this.inks
+    );
+    console.log(JSON.stringify(pathinks));
+    this.props.moves.submitDraw(pathinks);
+    this.props.events.endTurn();
+  }
+
   render() {
     let winner = null;
     if (this.props.ctx.gameover !== undefined) {
       winner = <div id="winner">Winner: {this.props.ctx.gameover}</div>;
     }
+    console.log('rendering: ' + this.props.playerID)
+    if (this.props.G.pathinks !== null && this.props.playerID == 1) {
+      console.log('UPDATING and player 1')
+      this.pathinks = this.importPathInks(this.props.G.pathinks);
+    }
 
     let player = null;
     if (this.props.playerID !== null) {
+      
       player = <div id="player">Player: {this.props.playerID}</div>;
     }
 
     return (
       <div>
-          Game Board
-          <button onClick={() => this.submit()}>Submit</button>
+        <button
+          className="w3-btn w3-ripple w3-red"
+          id="btnClear"
+          onClick={() => this.clearDrawing()}
+        >
+          clear
+        </button>
+        <div id="wrapper">
+          <canvas
+            ref={canvas => {
+              this.canvas = canvas;
+            }}
+          />
+          <br />
+        </div>
+        <button
+          className="w3-btn w3-ripple w3-green"
+          onClick={() => this.exportPathInks()}
+        >
+          Submit
+        </button>
         {player}
         {winner}
       </div>
