@@ -388,7 +388,7 @@ class Board extends React.Component {
         <div id="results">
         <div id="winner">Winner: {this.props.ctx.gameover.win}</div>
         <div id="playerGuess">Player Guess: {this.props.ctx.gameover.playerGuess}</div>
-        <div id="nnGuess">AI Guess: {this.props.ctx.gameover.nnGuess}</div>
+        <div id="nnGuess">AI Guess: {JSON.stringify(this.props.ctx.gameover.nnGuesses)}</div>
         </div>
       )
     }

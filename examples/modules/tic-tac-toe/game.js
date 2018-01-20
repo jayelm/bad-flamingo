@@ -6,6 +6,10 @@
  * https://opensource.org/licenses/MIT.
  */
 
+ var _ = require('lodash');
+
+ const NN_TOP_GUESSES = 3;
+
  const TOPICS = [
    'bird',
    'circle',
@@ -13,8 +17,13 @@
 
 import { Game, TurnOrder } from 'boardgame.io/core';
 
-function IsVictory(G) {
-
+function nnWins(nnGuesses, topic) {
+  for (var i = 0; i < Math.min(nnGuesses.length, NN_TOP_GUESSES); i++) {
+    if (nnGuesses[i][0] === topic) {
+      return true;
+    }
+  }
+  return false;
 }
 
 const TicTacToe = Game({
@@ -33,8 +42,6 @@ const TicTacToe = Game({
       return { ...G, pathinks };
     },
     submitGuess(G, ctx, playerGuess) {
-      console.log('submit guess move played!');
-      console.log({ ...G, playerGuess });
       return { ...G, playerGuess };
     },
     submitTraitor(G, ctx, [editedPathinks, nnGuesses]) {
@@ -47,13 +54,16 @@ const TicTacToe = Game({
     endGameIf: (G, ctx) => {
       console.log(G);
       // Need player guess and nn guess to be set
-      if (G.playerGuess !== null && G.nnGuess !== null) {
+      if (G.playerGuess !== null && G.nnGuesses !== null) {
+        console.log(G.nnGuesses);
         var win = null;
-        if (G.playerGuess === G.topic && G.nnGuess === G.topic) {
+        var nnWin = nnWins(G.nnGuesses, G.topic);
+        var playerWin = G.playerGuess === G.topic;
+        if (playerWin && nnWin) {
           win = "both";
-        } else if (G.playerGuess === G.topic) {
+        } else if (playerWin) {
           win = "guesser";
-        } else if (G.nnGuess === G.topic) {
+        } else if (nnWin) {
           win = "ai";
         } else {
           win = "neither";
@@ -61,7 +71,8 @@ const TicTacToe = Game({
         return {
           win: win,
           playerGuess: G.playerGuess,
-          nnGuess: G.nnGuess
+          nnGuesses: G.nnGuesses,
+          nnTopN: NN_TOP_GUESSES,
         }
       }
     },
@@ -76,7 +87,7 @@ const TicTacToe = Game({
       {
         name: 'play phase',
         allowedMoves: ['submitGuess', 'submitTraitor'],
-        endPhaseIf: G => G.playerGuess !== null && G.nnGuess !== null,
+        endPhaseIf: G => G.playerGuess !== null && G.nnGuesses !== null,
         turnOrder: TurnOrder.ANY
       },
     ],
