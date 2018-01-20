@@ -245,22 +245,21 @@ class Board extends React.Component {
   }
 
   render() {
-    console.log('props');
-    console.log(this.props);
     let winner = null;
     if (this.props.ctx.gameover !== undefined) {
       winner = <div id="winner">Winner: {this.props.ctx.gameover}</div>;
     }
-    console.log('rendering: ' + this.props.playerID)
-    if (this.props.G.pathinks !== null && this.props.playerID == 1) {
-      console.log('UPDATING and player 1')
+    if (this.props.G.pathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.pathinks);
     }
 
     let player = null;
     if (this.props.playerID !== null) {
-
       player = <div id="player">Player: {this.props.playerID}</div>;
+    }
+    let game = null;
+    if (this.props.gameID !== null) {
+      game = <div id="game">Game: {this.props.gameID}</div>;
     }
 
     return (
@@ -287,6 +286,7 @@ class Board extends React.Component {
           Submit
         </button>
         {player}
+        {game}
         {winner}
       </div>
     );

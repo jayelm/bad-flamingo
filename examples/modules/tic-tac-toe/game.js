@@ -21,7 +21,6 @@ const TicTacToe = Game({
 
   moves: {
     submitDraw(G, ctx, pathinks) {
-      console.log('submitDraw');
       return { ...G, pathinks };
     },
   },
