@@ -16,6 +16,10 @@ const port = process.env.PORT || 8000;
 module.exports = {
   entry: ['webpack-hot-middleware/client', path.resolve(__dirname, 'index.js')],
 
+  node: {
+    fs: 'empty'
+  },
+
   output: {
     publicPath: '/',
     filename: 'bundle.js',

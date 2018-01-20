@@ -10,6 +10,7 @@ import React from 'react';
 import paper from 'paper';
 import PropTypes from 'prop-types';
 import './board.css';
+import predict from './keras_model.js';
 
 const REAL_PLAYER_NAMES = [
   'drawer',
