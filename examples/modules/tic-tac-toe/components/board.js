@@ -32,6 +32,8 @@ class Board extends React.Component {
       this.mountDrawer();
     } else if (this.props.playerID == 1) {
       this.mountTraitor();
+    } else if (this.props.playerID == 2) {
+      this.mountGuesser();
     }
   }
 
@@ -40,6 +42,8 @@ class Board extends React.Component {
       // this.mountDrawer();
     } else if (this.props.playerID == 1) {
       this.updateTraitor();
+    } else if (this.props.playerID == 2) {
+      this.updateTraitor(); // Same action
     }
   }
   importPathInks(pathinks) {
@@ -120,6 +124,12 @@ class Board extends React.Component {
   }
 
   mountTraitor() {
+    paper.install(this);
+    this.paper = new paper.PaperScope();
+    this.paper.setup(this.canvas); // Setup Paper #canvas
+  }
+
+  mountGuesser() {
     paper.install(this);
     this.paper = new paper.PaperScope();
     this.paper.setup(this.canvas); // Setup Paper #canvas
@@ -334,7 +344,6 @@ class Board extends React.Component {
   }
 
   submitGuess() {
-    console.log(this.guess.value);
     if (this.guess !== null) {
       this.props.moves.submitGuess(this.guess.value);
     }
@@ -375,7 +384,13 @@ class Board extends React.Component {
   render() {
     let winner = null;
     if (this.props.ctx.gameover !== undefined) {
-      winner = <div id="winner">Winner: {this.props.ctx.gameover}</div>;
+      winner = (
+        <div id="results">
+        <div id="winner">Winner: {this.props.ctx.gameover.win}</div>
+        <div id="playerGuess">Player Guess: {this.props.ctx.gameover.playerGuess}</div>
+        <div id="nnGuess">AI Guess: {this.props.ctx.gameover.nnGuess}</div>
+        </div>
+      )
     }
     if (this.props.G.editedPathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.editedPathinks);
