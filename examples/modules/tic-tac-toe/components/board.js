@@ -70,15 +70,19 @@ class Board extends React.Component {
 
   drawInk() {
     console.log('drawInk: ' + this.props.playerID);
-    var clonepathinks = JSON.parse(JSON.stringify(this.pathinks));
-    var paths = [];
-    Object.keys(clonepathinks).forEach(thispath => {
+    console.log(this.pathinks)
+    this.clonepathinks = JSON.parse(JSON.stringify(this.pathinks));
+    if (this.paths) {
+      this.paths.forEach(path => path.remove())
+    }
+    this.paths = [];
+    Object.keys(this.pathinks).forEach(thispath => {
       console.log(thispath);
-      var i = paths.push(new this.paper.Path()) - 1;
-      paths[i].importJSON(thispath);
-      paths[i].onClick = event => {
-        paths[i].opacity = 0;
-        delete this.pathinks[thispath];
+      var i = this.paths.push(new this.paper.Path()) - 1;
+      this.paths[i].importJSON(thispath);
+      this.paths[i].onClick = event => {
+        this.paths[i].remove();
+        delete this.clonepathinks[thispath];
       };
       console.log(this.paper);
     });
@@ -183,8 +187,7 @@ class Board extends React.Component {
   // Clear Paper Drawing Canvas
   clearDrawing() {
     // Remove Paper Path Layer
-    this.paper.project.removeChildren();
-    this.paper.view.draw();
+    this.paths.forEach(path => path.remove())
 
     // Init Ink Array
     this.initInk();
@@ -269,7 +272,7 @@ class Board extends React.Component {
         {
           language: 'quickdraw',
           writing_guide: { width: c_dims.width, height: c_dims.height },
-          ink: Object.values(this.pathinks),
+          ink: Object.values(this.clonepathinks),
         },
       ],
     };
