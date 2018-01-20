@@ -12,12 +12,20 @@ import PropTypes from 'prop-types';
 import './board.css';
 import './w3.css';
 import predict from './keras_model.js';
+import TOPICS from '../topics';
+import horsey from 'horsey';
+import './horsey.css';
+
+
 
 const REAL_PLAYER_NAMES = [
   'drawer',
   'traitor',
   'guesser'
 ]
+console.log(TOPICS)
+
+
 
 class Board extends React.Component {
   static propTypes = {
@@ -134,6 +142,12 @@ class Board extends React.Component {
     paper.install(this);
     this.paper = new paper.PaperScope();
     this.paper.setup(this.canvas); // Setup Paper #canvas
+    horsey(this.guess, {
+      debounce: 10,
+      limit: 4,
+      source: [{list: TOPICS}],
+
+    });
   }
 
   updateTraitor() {
@@ -309,6 +323,7 @@ class Board extends React.Component {
       }
     };
 
+
     // Create New Data Payload for Quickdraw Google AI API
     var data = {
       input_type: 0,
@@ -383,38 +398,16 @@ class Board extends React.Component {
   }
 
   render() {
-    if (this.round === undefined) {
-      this.round = 0;
-    }
     let winner = null;
     if (this.props.ctx.gameover !== undefined) {
       winner = (
         <div id="results">
-        <div id="winner">Winner: {this.props.ctx.gameover}</div>
+        <div id="winner">Winner: {this.props.ctx.gameover.win}</div>
+        <div id="playerGuess">Player Guess: {this.props.ctx.gameover.playerGuess}</div>
+        <div id="nnGuess">AI Guess: {JSON.stringify(this.props.ctx.gameover.nnGuesses)}</div>
         </div>
       )
     }
-
-    var lastResult = (
-      <div id="lastResult">
-      <div id="playerGuess">Last Round Player Guess: {this.props.G.lastPlayerGuess}</div>
-      <div id="nnGuess">Last Round AI Guess: {JSON.stringify(this.props.G.lastNNGuesses)}</div>
-      </div>
-    )
-    if (this.props.G.round !== this.round) {
-      // New game
-      this.round = this.props.G.round;
-      this.submitButton.disabled = false;
-    }
-
-    var scores = (
-      <div id="scores">
-      <div id="playerScore">Player Score: {this.props.G.playerScore}</div>
-      <div id="nnScore">AI Score: {this.props.G.aiScore}</div>
-      </div>
-    )
-
-
     if (this.props.G.editedPathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.editedPathinks);
     } else if (this.props.G.pathinks !== null) {
@@ -484,8 +477,6 @@ class Board extends React.Component {
         {player}
         {game}
         {phase}
-        {lastResult}
-        {scores}
         {winner}
         {guess_form}
       </div>

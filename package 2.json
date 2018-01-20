@@ -104,9 +104,6 @@
     "webpack": "^3.5.5"
   },
   "dependencies": {
-    "fuzzysearch": "^1.0.3",
-    "fuzzysearch-js": "^0.2.0",
-    "horsey": "^4.2.2",
     "keras-js": "^1.0.2",
     "koa": "^2.3.0",
     "koa-router": "^7.2.1",
