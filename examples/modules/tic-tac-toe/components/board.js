@@ -256,10 +256,7 @@ class Board extends React.Component {
 
   submitTraitor() {
     // this.pathinks = this.clonepathinks
-    console.log('clone')
-    console.log(this.clonepathinks)
-    console.log('real')
-    console.log(this.pathinks)
+
     this.checkQuickDraw()
 
   }
@@ -328,10 +325,9 @@ class Board extends React.Component {
     this.scores = JSON.parse(
       res_j[1][0][3].debug_info.match(/SCORESINKS: (.+) Combiner:/)[1]
     );
-    var p_title = 'BEST GUESS: ' + this.scores[0][0] + ' (' + this.Scores[0][1] + ')';
+    var p_title = 'BEST GUESS: ' + this.scores[0][0] + ' (' + this.scores[0][1] + ')';
     console.log(p_title)
-    console.log('exporting')
-    this.props.moves.submitTraitor([this.exportPathInks(this.clonepathinks), this.scores[0][0]])
+    this.props.moves.submitTraitor([this.exportPathInks(this.clonepathinks), this.scores])
     // Add New Guess Scores to Score History
     // updateScoresHistory();
     // Plot Guess Scores
@@ -382,8 +378,6 @@ class Board extends React.Component {
       winner = <div id="winner">Winner: {this.props.ctx.gameover}</div>;
     }
     if (this.props.G.editedPathinks !== null) {
-      console.log(this.props.G.editedPathinks)
-      console.log(this.props.G.pathinks)
       this.pathinks = this.importPathInks(this.props.G.editedPathinks);
     } else if (this.props.G.pathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.pathinks);
