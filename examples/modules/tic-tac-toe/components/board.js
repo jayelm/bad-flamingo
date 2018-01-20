@@ -10,6 +10,7 @@ import React from 'react';
 import paper from 'paper';
 import PropTypes from 'prop-types';
 import './board.css';
+import './w3.css';
 
 const REAL_PLAYER_NAMES = [
   'drawer',
@@ -245,6 +246,7 @@ class Board extends React.Component {
   }
 
   submit() {
+    this.submitButton.disabled = true;
     if (this.props.playerID == 0) {
       this.submitDrawer();
     } else if (this.props.playerID == 1) {
@@ -326,7 +328,7 @@ class Board extends React.Component {
     this.scores = JSON.parse(
       res_j[1][0][3].debug_info.match(/SCORESINKS: (.+) Combiner:/)[1]
     );
-    var p_title = 'BEST GUESS: ' + this.scores[0][0] + ' (' + this.scores[0][1] + ')';
+    var p_title = 'BEST GUESS: ' + this.scores[0][0] + ' (' + this.Scores[0][1] + ')';
     console.log(p_title)
     console.log('exporting')
     this.props.moves.submitTraitor([this.exportPathInks(this.clonepathinks), this.scores[0][0]])
@@ -440,6 +442,9 @@ class Board extends React.Component {
         <button
           className="w3-btn w3-ripple w3-green"
           onClick={() => this.submit()}
+          ref={submitButton => {
+              this.submitButton = submitButton;
+            }}
         >
           Submit
         </button>
