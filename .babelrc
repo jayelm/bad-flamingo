@@ -1,0 +1,25 @@
+{
+  "presets": [
+    ["es2015", { "modules": false }],
+    "react",
+    "stage-0"
+  ],
+  "env": {
+    "targets": {
+      "node": "current"
+    },
+    "test": {
+      "plugins": ["transform-es2015-modules-commonjs"]
+    },
+    "rollup": {
+      "plugins": ["external-helpers"]
+    }
+  },
+  "plugins": [
+    ["module-resolver", {
+      "alias": {
+        "boardgame.io": "./packages",
+      }
+    }],
+  ]
+}
