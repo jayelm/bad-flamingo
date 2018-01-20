@@ -91,6 +91,8 @@ class Board extends React.Component {
   }
 
   updateTraitor() {
+    this.paper = new paper.PaperScope();
+    this.paper.setup(this.canvas); // Setup Paper #canvas
     if (this.pathinks ){
       this.drawInk()
     }
@@ -185,6 +187,9 @@ class Board extends React.Component {
 
     // Init Ink Array
     this.initInk();
+    if (this.props.playerID == 1) {
+      this.drawInk();
+    }
 
     // Resert Variables
     this.timer = 0;
@@ -236,7 +241,7 @@ class Board extends React.Component {
     );
     console.log(JSON.stringify(pathinks));
     this.props.moves.submitDraw(pathinks);
-    this.props.events.endTurn();
+    // this.props.events.endTurn();
   }
 
   render() {
@@ -252,7 +257,7 @@ class Board extends React.Component {
 
     let player = null;
     if (this.props.playerID !== null) {
-      
+
       player = <div id="player">Player: {this.props.playerID}</div>;
     }
 

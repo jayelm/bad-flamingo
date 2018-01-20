@@ -16,18 +16,18 @@ const TicTacToe = Game({
   name: 'tic-tac-toe',
 
   setup: () => ({
-    pathinks: null
+    pathinks: null,
   }),
 
   moves: {
     submitDraw(G, ctx, pathinks) {
-        console.log('submitDraw')
-        return { ...G, pathinks };
+      console.log('submitDraw');
+      return { ...G, pathinks };
     },
   },
 
   flow: {
-    movesPerTurn: 1,
+    movesPerTurn: 5,
 
     endGameIf: (G, ctx) => {
       if (IsVictory(G.pathinks)) {
