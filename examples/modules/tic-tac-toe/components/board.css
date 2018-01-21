@@ -115,7 +115,7 @@ td.active:hover {
 
 #gameCode {
   margin-top: 10px;
-  width: 100px;
+  width: 150px;
   display: inline-block;
   position: absolute;
   right: 0;
@@ -139,6 +139,7 @@ td.active:hover {
   font-family: "Open Sans";
   font-size: 30px;
   margin: 0px;
+  text-transform: uppercase;
 }
 
 .scoreContainer {
