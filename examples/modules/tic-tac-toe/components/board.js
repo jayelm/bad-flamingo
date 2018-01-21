@@ -79,13 +79,13 @@ class Board extends React.Component {
   }
   importPathInks(pathinks) {
     var pathsexport = Object.keys(pathinks);
-
+    var d = Math.min(this.canvas.offsetWidth,this.canvas.offsetHeight)
     pathsexport = pathsexport.map(path => {
       var simplepath = JSON.parse(path);
       simplepath[1]['segments'] = simplepath[1]['segments'].map(segment => {
         return [
-          segment[0] * this.canvas.offsetWidth,
-          segment[1] * this.canvas.offsetHeight,
+          segment[0] * d,
+          segment[1] * d,
         ];
       });
       return JSON.stringify(simplepath);
@@ -93,10 +93,10 @@ class Board extends React.Component {
     var inks = Object.values(pathinks);
     inks = inks.map(ink => {
       ink[0] = ink[0].map(x => {
-        return x * this.canvas.offsetWidth;
+        return x * d;
       });
       ink[1] = ink[1].map(y => {
-        return y * this.canvas.offsetHeight;
+        return y * d;
       });
       return ink;
     });
@@ -110,13 +110,13 @@ class Board extends React.Component {
 
   exportPathInks(pathinks) {
     var pathsexport = Object.keys(pathinks);
-
+    var d = Math.min(this.canvas.offsetWidth,this.canvas.offsetHeight)
     pathsexport = pathsexport.map(path => {
       var simplepath = JSON.parse(path);
       simplepath[1]['segments'] = simplepath[1]['segments'].map(segment => {
         return [
-          segment[0] / this.canvas.offsetWidth,
-          segment[1] / this.canvas.offsetHeight,
+          segment[0] / d,
+          segment[1] / d,
         ];
       });
       return JSON.stringify(simplepath);
@@ -124,10 +124,10 @@ class Board extends React.Component {
     var inks = Object.values(pathinks);
     inks = inks.map(ink => {
       ink[0] = ink[0].map(x => {
-        return x / this.canvas.offsetWidth;
+        return x / d;
       });
       ink[1] = ink[1].map(y => {
-        return y / this.canvas.offsetHeight;
+        return y / d;
       });
       return ink;
     });
@@ -268,11 +268,12 @@ class Board extends React.Component {
   clearDrawing() {
     // Remove Paper Path Layer
     this.paths.forEach(path => path.remove());
-    this.pathinks = {};
     // Init Ink Array
     this.initInk();
-    if (this.props.playerID == 1) {
+    if (this.props.playerID === "1") {
       this.drawInk();
+    } else if (this.props.playerID === "0") {
+      this.pathinks = {}
     }
 
     // Resert Variables
@@ -401,23 +402,23 @@ class Board extends React.Component {
   submitDrawer() {
     this.newInk();
     var pathsexport = this.paths.map(path => path.exportJSON());
-
+    var d = Math.min(this.canvas.offsetWidth,this.canvas.offsetHeight)
     pathsexport = pathsexport.map(path => {
       var simplepath = JSON.parse(path);
       simplepath[1]['segments'] = simplepath[1]['segments'].map(segment => {
         return [
-          segment[0] / this.canvas.offsetWidth,
-          segment[1] / this.canvas.offsetHeight,
+          segment[0] / d,
+          segment[1] / d,
         ];
       });
       return JSON.stringify(simplepath);
     });
     this.inks = this.inks.map(ink => {
       ink[0] = ink[0].map(x => {
-        return x / this.canvas.offsetWidth;
+        return x / d;
       });
       ink[1] = ink[1].map(y => {
-        return y / this.canvas.offsetHeight;
+        return y / d;
       });
       return ink;
     });
