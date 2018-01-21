@@ -100,6 +100,7 @@ class Main extends React.Component {
               <p>Fool the computer, but not your friends!</p>
               <Link to={"/" + randomGameCode() + "/0"}><button>New</button></Link>
               <br />
+              <br />
               <input
                 id="heroGameCode"
                 type="text"
@@ -109,8 +110,7 @@ class Main extends React.Component {
                 ref={gameCodeInput => {this.gameCodeInput = gameCodeInput;}}
               />
               <br />
-              <button>Join</button>
-              <Link to={"/" + "1" + "/2"}><button>New</button></Link>
+              <Link to={"/" + "1" + "/2"}><button>Join</button></Link>
             </div>
           </div>
         </div>
