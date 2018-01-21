@@ -1,0 +1,24 @@
+[[source]]
+
+name = "pypi"
+verify_ssl = true
+url = "https://pypi.python.org/simple"
+
+
+[requires]
+
+python_version = "3.5"
+
+
+[dev-packages]
+
+
+
+[packages]
+
+tensorflow-gpu = "*"
+keras = "*"
+jupyter = "*"
+matplotlib = "*"
+"h5py" = "*"
+pillow = "*"
