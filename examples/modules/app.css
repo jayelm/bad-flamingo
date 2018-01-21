@@ -176,7 +176,7 @@ div#test {
   margin-bottom: 20px;
 }
 
-img#bflogo {
+img.bflogo {
   width: 250px;
   height: 250px;
   margin-bottom: -25px;
