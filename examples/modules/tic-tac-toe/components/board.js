@@ -623,24 +623,17 @@ class Board extends React.Component {
             }}
           >
             <p>
-              The topic was:{' '}
-              {
+              The drawing was <strong>{
                 this.props.G.previousTopics[
                   this.props.G.previousTopics.length - 1
                 ]
-              }
+              }</strong>
             </p>
-            <p>The player guessed: {this.props.G.lastPlayerGuess}</p>
+            <p>The player guessed <strong>{this.props.G.lastPlayerGuess}</strong></p>
             <p>
-              The AI guessed:{' '}
-              {this.props.G.lastNNGuesses &&
-                JSON.stringify(this.props.G.lastNNGuesses.slice(0, 3))}...
-            </p>
-            <p>
-              The score is {this.props.G.playerScore} to {this.props.G.aiScore}
-            </p>
+              The AI guessed <strong>{this.props.G.lastNNGuesses &&
+                this.props.G.lastNNGuesses[0][0]}</strong></p>
           </div>
-          <br />
         </div>
         {guess_form}
         {score_display}
