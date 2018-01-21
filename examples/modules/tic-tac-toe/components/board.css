@@ -11,7 +11,7 @@
   width: 100%;
   position: fixed;
   height: 100%;
-  background:white;
+  background: white;
 }
 
 input {
@@ -35,7 +35,7 @@ input {
 }
 
 button {
-  border: 4px solid #5C604D;
+  border: 4px solid #5c604d;
   cursor: pointer;
   background-color: white;
   width: 100px;
@@ -43,11 +43,15 @@ button {
   font-size: 30px;
   text-align: center;
   line-height: 50px;
-  font-family: "Indie Flower", cursive;
+  font-family: 'Indie Flower', cursive;
+}
+
+button:disabled {
+  background-color: red;
 }
 
 button:hover {
-  background-color: #5C604D;
+  background-color: #5c604d;
   color: white;
   font-weight: bold;
 }
@@ -55,7 +59,7 @@ button:hover {
 canvas {
   background-color: white;
   height: 70vmin;
-  border: 4px solid #5C604D;
+  border: 4px solid #5c604d;
   width: 70vmin;
   cursor: pointer;
   margin-right: 0px;
@@ -87,7 +91,6 @@ td.active {
 td.active:hover {
   background: #eeffff;
 }
-
 
 .why {
   visibility: hidden;

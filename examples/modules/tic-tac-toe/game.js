@@ -73,12 +73,12 @@ const TicTacToe = Game({
 
   moves: {
     submitDraw(G, ctx, pathinks) {
-      console.log("submitDraw");
+      console.log('submitDraw');
       return {
         ...G,
         pathinks: pathinks,
         // TODO: Do we need this copy?
-        editedPathinks: JSON.parse(JSON.stringify(pathinks))
+        editedPathinks: JSON.parse(JSON.stringify(pathinks)),
       };
     },
     submitGuess(G, ctx, playerGuess) {
