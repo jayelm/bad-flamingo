@@ -68,8 +68,19 @@ p {
 .hcinfo {
   float: left;
   margin-left: 24px;
+  margin-right: 24px;
   margin-bottom: 8px;
 }
+
+@media only screen and (max-width: 600px) {
+  .hcinfo {
+    float: none;
+  }
+  .hclogo {
+    display: none;
+  }
+}
+
 .table-inner{
   display: table-cell; vertical-align: middle;
 }
@@ -98,12 +109,25 @@ p {
   display: inline-block;
   vertical-align: middle;
 }
+.hero p {
+  max-width: 500px;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+
+img#bflogo {
+  width: 250px;
+  height: 250px;
+  margin-bottom: -25px;
+}
 
 h1.heroname {
   margin: 0px;
-  padding: 20px;
   font-size: 60px;
   color: #FFBAD2;
+  padding: 0px;
 }
 
 h1.title {
