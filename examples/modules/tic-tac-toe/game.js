@@ -6,8 +6,8 @@
  * https://opensource.org/licenses/MIT.
  */
 
-const NN_TOP_GUESSES = 5;
-const FIRST_TO_N = 5;
+const NN_TOP_GUESSES = 10;
+const FIRST_TO_N = 10000;
 
 import TOPICS from './topics';
 
@@ -69,6 +69,7 @@ const TicTacToe = Game({
     aiScore: 0,
     lastPlayerGuess: null,
     lastNNGuesses: null,
+    winResult: null
   }),
 
   moves: {
@@ -129,7 +130,7 @@ const TicTacToe = Game({
           return {
             ...G,
             playerScore:
-              winResult.win === 'guesser' || winResult.win == 'both'
+              winResult.win === 'guesser'
                 ? G.playerScore + 1
                 : G.playerScore,
             aiScore:
@@ -145,6 +146,7 @@ const TicTacToe = Game({
             editedPathinks: null,
             lastPlayerGuess: winResult.playerGuess,
             lastNNGuesses: winResult.nnGuesses,
+            winResult: winResult
           };
         },
         turnOrder: TurnOrder.ANY,
