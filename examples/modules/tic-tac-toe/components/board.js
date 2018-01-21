@@ -16,7 +16,6 @@ import horsey from 'horsey';
 import './horsey.css';
 
 const REAL_PLAYER_NAMES = ['drawer', 'traitor', 'guesser'];
-console.log(TOPICS);
 
 class Board extends React.Component {
   static propTypes = {

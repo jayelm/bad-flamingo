@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { HashRouter as Router, Route, browserHistory } from 'react-router-dom';
+import { HashRouter as Router, Route, browserHistory, Link } from 'react-router-dom';
 import _ from 'lodash';
 import LiNavLink from './li-navlink';
 
@@ -42,6 +42,15 @@ class Main extends React.Component {
   }
 
   render() {
+    function randomGameCode() {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      for (var i = 0; i < 4; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+      return text;
+    }
+
     return (
       <div className="parentWrapper">
         <a
@@ -89,8 +98,7 @@ class Main extends React.Component {
               />
               <h1 className="heroname">Bad Flamingo</h1>
               <p>Fool the computer, but not your friends!</p>
-              <button>New</button>
-              <br />
+              <Link to={"/" + randomGameCode() + "/0"}><button>New</button></Link>
               <br />
               <input
                 id="heroGameCode"
@@ -98,9 +106,11 @@ class Main extends React.Component {
                 name="gameCode"
                 placeholder="code"
                 maxLength="4"
+                ref={gameCodeInput => {this.gameCodeInput = gameCodeInput;}}
               />
               <br />
               <button>Join</button>
+              <Link to={"/" + this.gameCodeInput.value + "/2"}><button>New</button></Link>
             </div>
           </div>
         </div>
@@ -133,7 +143,7 @@ class Main extends React.Component {
                 <img
                   style={{ display: 'none' }}
                   src={this.state.imgSrc}
-                  class="bflogo"
+                  className="bflogo"
                 />
                 <h1 className="heroname white">Why?</h1>
                 <br />
