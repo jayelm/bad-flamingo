@@ -18,7 +18,9 @@ import './app.css';
 const App = () => (
   <Router history={browserHistory}>
     <main>
-      <h1>Bad Flamingo</h1>
+    <div className="headerSection">
+      <h1 className="title">Bad Flamingo</h1>
+      </div>
       <section className="drawWrapper">
         <Route
           key="1"

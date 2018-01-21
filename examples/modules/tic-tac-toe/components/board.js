@@ -10,7 +10,6 @@ import React from 'react';
 import paper from 'paper';
 import PropTypes from 'prop-types';
 import './board.css';
-import './w3.css';
 import predict from './keras_model.js';
 import TOPICS from '../topics';
 import horsey from 'horsey';
@@ -165,7 +164,7 @@ class Board extends React.Component {
       // New Paper Path and Settings
 
       this.path = new this.paper.Path();
-      this.path.strokeColor = 'black';
+      this.path.strokeColor = '#5C604D';
       this.path.strokeWidth = 7;
       this.paths.push(this.path);
       // Get Time [ms] for each Guess (needed for accurate Google AI Guessing)
@@ -391,6 +390,9 @@ class Board extends React.Component {
   }
 
   render() {
+    if (this.round === undefined) {
+      this.round = 0;
+    }
     let winner = null;
     if (this.props.ctx.gameover !== undefined) {
       winner = (
@@ -405,7 +407,34 @@ class Board extends React.Component {
         </div>
       );
     }
-    if (this.props.G.editedPathinks !== null) {
+
+    var lastResult = (
+      <div id="lastResult">
+      <div id="playerGuess">Last Round Player Guess: {this.props.G.lastPlayerGuess}</div>
+      <div id="nnGuess">Last Round AI Guess: {JSON.stringify(this.props.G.lastNNGuesses)}</div>
+      </div>
+    )
+    if (this.props.G.round !== this.round) {
+      // New game
+      this.round = this.props.G.round;
+      this.submitButton.disabled = false;
+      // Clear canvas for drawer only (other players can continue viewing)
+      if (this.props.playerID === "0") {
+        this.clearDrawing();
+      }
+    }
+
+    var scores = (
+      <div id="scores">
+      <div id="playerScore">Player Score: {this.props.G.playerScore}</div>
+      <div id="nnScore">AI Score: {this.props.G.aiScore}</div>
+      </div>
+    )
+
+
+    if (this.props.G.editedPathinks !== null &&
+        this.props.playerID === 1) {
+          // Traitor only messes around with editedPathInks
       this.pathinks = this.importPathInks(this.props.G.editedPathinks);
     } else if (this.props.G.pathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.pathinks);
@@ -413,65 +442,54 @@ class Board extends React.Component {
 
     let phase = <div id="phase">Phase: {this.props.ctx.phase}</div>;
 
-    let player = null;
+    let playerPrompt = null;
     if (this.props.playerID !== null) {
-      player = (
-        <div id="player">
-          You are the <strong>{REAL_PLAYER_NAMES[this.props.playerID]}</strong>
-        </div>
-      );
+      if (this.props.playerID == "0") {
+        playerPrompt = (
+          <div id="player"><p>You are the <strong>drawer</strong>.
+          Draw a <strong>{this.props.G.topic}</strong>.
+          </p>
+          </div>
+        )
+      } else if (this.props.playerID == "1") {
+        playerPrompt = (
+          <div id="player"><p>You are the <strong>traitor</strong>.
+          Wait for the drawer.</p>
+          </div>
+        )
+      } else if (this.props.playerID == "2") {
+        playerPrompt = (
+          <div id="player"><p>You are the <strong>guesser</strong>.
+          Wait for the drawer.</p>
+          </div>
+        )
+      } else {
+        playerPrompt = <div id="player">UNKNOWN PLAYER</div>
+      }
+
     }
     let game = null;
     if (this.props.gameID !== null) {
       game = <div id="game">Game: {this.props.gameID}</div>;
     }
-    let topic = null;
-
-    // Player 0 (drawer) logic
-    if (this.props.playerID !== null && this.props.playerID === '0') {
-      topic = (
-        <div id="topic">
-          Draw a <strong>{this.props.G.topic}</strong>
-        </div>
-      );
-    }
 
     let guess_form = null;
-    // Player 1 (guesser) logic (TODO: don't forget about traitor)
-    if (this.props.playerID !== null && this.props.playerID === '2') {
+    // Player 2 (guesser) logic (TODO: don't forget about traitor)
+    if (this.props.playerID !== null && this.props.playerID === "2") {
       guess_form = (
         <div id="guessform">
-          <p>Your guess:</p>
-          <br />
-          <input
-            ref={guess => {
-              this.guess = guess;
-            }}
-            id="df"
-            type="text"
-            name="guess"
-          />
-          <button
-            className="w3-btn w3-ripple w3-red"
-            id="guessSubmit"
-            onClick={() => this.submitGuess()}
-          >
-            Submit Guess
-          </button>
-        </div>
-      );
+        <p>Your guess:</p><br></br>
+        <input ref={guess => {this.guess = guess;}}
+          id="df" type="text" name="guess"></input>
+        <button className="submitButton" id="guessSubmit"
+         onClick={() => this.submitGuess()}>Submit Guess</button>
+         </div>
+      )
     }
 
     return (
       <div>
-        <button
-          className="w3-btn w3-ripple w3-red"
-          id="btnClear"
-          onClick={() => this.clearDrawing()}
-        >
-          Reset
-        </button>
-        {topic}
+        {playerPrompt}
         <div id="wrapper">
           <canvas
             ref={canvas => {
@@ -480,8 +498,9 @@ class Board extends React.Component {
           />
           <br />
         </div>
+        <div className="buttonHolder">
         <button
-          className="w3-btn w3-ripple w3-green"
+          className="submitButton"
           onClick={() => this.submit()}
           ref={submitButton => {
             this.submitButton = submitButton;
@@ -489,8 +508,15 @@ class Board extends React.Component {
         >
           Submit
         </button>
+        <button
+          className="resetButton"
+          id="btnClear"
+          onClick={() => this.clearDrawing()}
+        >
+          Reset
+        </button>
+        </div>
 
-        {player}
         {game}
         {phase}
         {winner}
