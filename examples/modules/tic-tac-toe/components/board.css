@@ -6,6 +6,21 @@
  * https://opensource.org/licenses/MIT.
  */
 
+#overlay {
+  display: none;
+  width: 100%;
+  position: fixed;
+  height: 100%;
+  background:white;
+}
+
+input {
+  margin: auto;
+  text-align: center;
+  width: 400px;
+  margin: 10px;
+  font-size: 24px;
+}
  #player {
    font-size: 24px;
  }
