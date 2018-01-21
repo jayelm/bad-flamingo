@@ -27,7 +27,18 @@ class Board extends React.Component {
     isActive: PropTypes.bool,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      displayResults: false,
+      round: 0,
+    };
+  }
+
   componentDidMount() {
+    if (this.pathinks) {
+      this.drawInk();
+    }
     if (this.props.playerID == 0) {
       this.mountDrawer();
     } else if (this.props.playerID == 1) {
@@ -38,22 +49,22 @@ class Board extends React.Component {
   }
 
   displayLastRound() {
-    console.log('calling thisDisplayLastRound')
-    console.log('setting display block')
+    console.log('calling thisDisplayLastRound');
+    console.log('setting display block');
     console.log(this.overlay.style.display);
     this.overlay.style.display = 'block';
     // TODO: Make this a bit more exciting - if possible, keep the image displayed
     setTimeout(() => {
-      console.log('setting back to none')
+      console.log('setting back to none');
       this.overlay.style.display = 'none';
-    }, 6000)
+    }, 6000);
   }
 
   componentDidUpdate() {
-    console.log('updating components')
-    if (this.displayResults) {
+    console.log('updating components');
+    if (this.state.displayResults) {
       this.displayLastRound();
-      this.displayResults = false;
+      this.state.displayResults = false;
     }
     if (this.props.playerID == 0) {
       // this.mountDrawer();
@@ -61,6 +72,9 @@ class Board extends React.Component {
       this.updateTraitor();
     } else if (this.props.playerID == 2) {
       this.updateTraitor(); // Same action
+    }
+    if (this.pathinks) {
+      this.drawInk();
     }
   }
   importPathInks(pathinks) {
@@ -133,10 +147,14 @@ class Board extends React.Component {
     Object.keys(this.pathinks).forEach(thispath => {
       var i = this.paths.push(new this.paper.Path()) - 1;
       this.paths[i].importJSON(thispath);
-      this.paths[i].onClick = event => {
-        this.paths[i].remove();
-        delete this.clonepathinks[thispath];
-      };
+      if (this.props.playerID == '1') {
+        console.log('onclick register');
+        this.paths[i].onClick = event => {
+          console.log('onclick');
+          this.paths[i].remove();
+          delete this.clonepathinks[thispath];
+        };
+      }
     });
   }
 
@@ -160,9 +178,9 @@ class Board extends React.Component {
   updateTraitor() {
     this.paper = new paper.PaperScope();
     this.paper.setup(this.canvas); // Setup Paper #canvas
-    if (this.pathinks) {
-      this.drawInk();
-    }
+    // if (this.pathinks) {
+    //   this.drawInk();
+    // }
   }
 
   mountDrawer() {
@@ -250,7 +268,7 @@ class Board extends React.Component {
   clearDrawing() {
     // Remove Paper Path Layer
     this.paths.forEach(path => path.remove());
-
+    this.pathinks = {};
     // Init Ink Array
     this.initInk();
     if (this.props.playerID == 1) {
@@ -373,7 +391,7 @@ class Board extends React.Component {
   submitGuess() {
     if (this.guess !== null) {
       if (this.guess === '') {
-        alert('Enter a guess!')
+        alert('Enter a guess!');
       } else {
         this.props.moves.submitGuess(this.guess.value);
       }
@@ -413,12 +431,6 @@ class Board extends React.Component {
   }
 
   render() {
-    if (this.round === undefined) {
-      this.round = 0;
-    }
-    if (this.displayResults === undefined) {
-      this.displayResults = false;
-    }
     let winner = null;
     if (this.props.ctx.gameover !== undefined) {
       winner = (
@@ -436,32 +448,36 @@ class Board extends React.Component {
 
     var lastResult = (
       <div id="lastResult">
-      <div id="playerGuess">Last Round Player Guess: {this.props.G.lastPlayerGuess}</div>
-      <div id="nnGuess">Last Round AI Guess: {JSON.stringify(this.props.G.lastNNGuesses)}</div>
+        <div id="playerGuess">
+          Last Round Player Guess: {this.props.G.lastPlayerGuess}
+        </div>
+        <div id="nnGuess">
+          Last Round AI Guess: {JSON.stringify(this.props.G.lastNNGuesses)}
+        </div>
       </div>
-    )
-    if (this.props.G.round !== this.round) {
-      console.log('new round!')
+    );
+    if (this.props.G.round !== this.state.round) {
+      console.log('new round!');
       // New game
-      this.round = this.props.G.round;
+      this.state.round = this.props.G.round;
       this.submitButton.disabled = false;
       // Clear canvas for drawer only (other players can continue viewing)
-      if (this.props.playerID === "0") {
+      if (this.props.playerID === '0') {
+        console.log('clear drawer');
         this.clearDrawing();
       }
-      this.displayResults = true;
+      this.state.displayResults = true;
     }
 
     var scores = (
       <div id="scores">
-      <div id="playerScore">Player Score: {this.props.G.playerScore}</div>
-      <div id="nnScore">AI Score: {this.props.G.aiScore}</div>
+        <div id="playerScore">Player Score: {this.props.G.playerScore}</div>
+        <div id="nnScore">AI Score: {this.props.G.aiScore}</div>
       </div>
-    )
+    );
 
-    if (this.props.G.editedPathinks !== null &&
-        this.props.playerID === 1) {
-          // Traitor only messes around with editedPathInks
+    if (this.props.G.editedPathinks !== null && this.props.playerID == '1') {
+      // Traitor only messes around with editedPathInks
       this.pathinks = this.importPathInks(this.props.G.editedPathinks);
     } else if (this.props.G.pathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.pathinks);
@@ -469,101 +485,144 @@ class Board extends React.Component {
 
     let playerPrompt = null;
     if (this.props.playerID !== null) {
-      if (this.props.playerID == "0") {
-        if (this.props.ctx.phase === "draw phase") {
+      if (this.props.playerID == '0') {
+        if (this.props.ctx.phase === 'draw phase') {
           playerPrompt = (
-            <div id="player"><p>You are the <strong>drawer</strong>.
-            <br></br>Draw a <strong>{this.props.G.topic}</strong>.
-            </p>
+            <div id="player">
+              <p>
+                You are the <strong>drawer</strong>.
+                <br />Draw a <strong>{this.props.G.topic}</strong>.
+              </p>
             </div>
-          )
+          );
         } else {
           playerPrompt = (
-            <div id="player"><p>You are the <strong>drawer</strong>.
-            <br></br>Wait for the other players to submit.
-            </p>
+            <div id="player">
+              <p>
+                You are the <strong>drawer</strong>.
+                <br />Wait for the other players to submit.
+              </p>
             </div>
-          )
+          );
         }
-      } else if (this.props.playerID == "1") {
-        if (this.props.ctx.phase === "draw phase") {
+      } else if (this.props.playerID == '1') {
+        if (this.props.ctx.phase === 'draw phase') {
           playerPrompt = (
-            <div id="player"><p>You are the <strong>traitor</strong>.
-            <br></br>Wait for the drawer.</p>
+            <div id="player">
+              <p>
+                You are the <strong>traitor</strong>.
+                <br />Wait for the drawer.
+              </p>
             </div>
-          )
+          );
         } else {
           playerPrompt = (
-            <div id="player"><p>You are the <strong>traitor</strong>.
-            <br></br>Modify the image to help the AI understand the drawing.</p>
+            <div id="player">
+              <p>
+                You are the <strong>traitor</strong>.
+                <br />Modify the image to help the AI understand the drawing.
+              </p>
             </div>
-          )
+          );
         }
-      } else if (this.props.playerID == "2") {
-        if (this.props.ctx.phase === "draw phase") {
+      } else if (this.props.playerID == '2') {
+        if (this.props.ctx.phase === 'draw phase') {
           playerPrompt = (
-            <div id="player"><p>You are the <strong>guesser</strong>.
-            <br></br>Wait for the drawer.</p>
+            <div id="player">
+              <p>
+                You are the <strong>guesser</strong>.
+                <br />Wait for the drawer.
+              </p>
             </div>
-          )
+          );
         } else {
           playerPrompt = (
-            <div id="player"><p>You are the <strong>guesser</strong>.
-            <br></br>Guess the image!</p>
+            <div id="player">
+              <p>
+                You are the <strong>guesser</strong>.
+                <br />Guess the image!
+              </p>
             </div>
-          )
+          );
         }
       } else {
-        playerPrompt = <div id="player">UNKNOWN PLAYER</div>
+        playerPrompt = <div id="player">UNKNOWN PLAYER</div>;
       }
-
     }
 
     let guess_form = null;
     // Player 2 (guesser) logic (TODO: don't forget about traitor)
-    if (this.props.playerID !== null && this.props.playerID === "2") {
+    if (this.props.playerID !== null && this.props.playerID === '2') {
       guess_form = (
         <div id="buttonHolder">
-        <input ref={guess => {this.guess = guess;}}
-          id="df" type="text" name="guess"></input>
-        <button className="submitButton" id="guessSubmit"
-         onClick={() => this.submit()}
-         ref={submitButton => {
-           this.submitButton = submitButton;
-         }}
-         >Guess</button>
-         </div>
-      )
+          <input
+            ref={guess => {
+              this.guess = guess;
+            }}
+            id="df"
+            type="text"
+            name="guess"
+          />
+          <button
+            className="submitButton"
+            id="guessSubmit"
+            onClick={() => this.submit()}
+            ref={submitButton => {
+              this.submitButton = submitButton;
+            }}
+          >
+            Guess
+          </button>
+        </div>
+      );
     } else {
       guess_form = (
         <div className="buttonHolder">
-        <button
-          className="submitButton"
-          onClick={() => this.submit()}
-          ref={submitButton => {
-            this.submitButton = submitButton;
-          }}
-        >
-          Submit
-        </button>
-        <button
-          className="resetButton"
-          id="btnClear"
-          onClick={() => this.clearDrawing()}
-        >
-          Reset
-        </button>
+          <button
+            className="submitButton"
+            onClick={() => this.submit()}
+            ref={submitButton => {
+              this.submitButton = submitButton;
+            }}
+          >
+            Submit
+          </button>
+          <button
+            className="resetButton"
+            id="btnClear"
+            onClick={() => this.clearDrawing()}
+          >
+            Reset
+          </button>
         </div>
-      )
+      );
     }
 
     return (
       <div>
-        <div id="overlay" ref={overlay => {this.overlay = overlay;}}>
-          <p>The topic was: {this.props.G.previousTopics[this.props.G.previousTopics.length - 1]}</p>
+        <div
+          id="overlay"
+          ref={overlay => {
+            this.overlay = overlay;
+          }}
+        >
+          <p>
+            The topic was:{' '}
+            {
+              this.props.G.previousTopics[
+                this.props.G.previousTopics.length - 1
+              ]
+            }
+          </p>
           <p>The player guessed: {this.props.G.lastPlayerGuess}</p>
-          <p>The AI guessed: {this.props.G.lastNNGuesses && JSON.stringify(this.props.G.lastNNGuesses.slice(0, 3))}...</p>
-          <p>The score is {this.props.G.playerScore} to {this.props.G.aiScore}</p>
+          <p>
+            The AI guessed:{' '}
+            {this.props.G.lastNNGuesses &&
+              JSON.stringify(this.props.G.lastNNGuesses.slice(0, 3))}...
+          </p>
+          <p>
+            The score is {this.props.G.playerScore} to {this.props.G.aiScore}
+          </p>
         </div>
         {playerPrompt}
         <div id="wrapper">

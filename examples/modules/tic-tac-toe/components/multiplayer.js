@@ -30,17 +30,17 @@ const Multiplayer = props => {
     );
   }
   return (
-      <section className="drawWrapper">
-        <div className="headerSection">
-          <h1 className="title">Bad Flamingo</h1>
-          </div>
-          <div className="gameContainer">
-              <App
-                gameID={props.match.params.gameid}
-                playerID={props.match.params.playerid}
-              />
-          </div>
-      </section>
+    <section className="drawWrapper">
+      <div className="headerSection">
+        <h1 className="title">Bad Flamingo</h1>
+      </div>
+      <div className="gameContainer">
+        <App
+          gameID={props.match.params.gameid}
+          playerID={props.match.params.playerid}
+        />
+      </div>
+    </section>
   );
 };
 

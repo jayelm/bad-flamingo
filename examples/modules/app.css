@@ -8,8 +8,8 @@
 
 html,
 body {
-    height: 100%;
-    font-family: "Open Sans"
+  height: 100%;
+  font-family: 'Open Sans';
 }
 
 strong {
@@ -17,46 +17,46 @@ strong {
 }
 
 p {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
- body {
-   margin: 0;
- }
+body {
+  margin: 0;
+}
 
- canvas {
-   background-color: white;
- }
+canvas {
+  background-color: white;
+}
 
- .footer a {
-   font-family: "Open Sans", sans-serif;
-   color: #FFBAD2;
- }
+.footer a {
+  font-family: 'Open Sans', sans-serif;
+  color: #ffbad2;
+}
 
- .footer a:hover {
-   color: #e56390;
-   -o-transition:.25s;
--ms-transition:.25s;
--moz-transition:.25s;
--webkit-transition:.25s;
-/* ...and now for the proper property */
-transition:.25s;
- }
+.footer a:hover {
+  color: #e56390;
+  -o-transition: 0.25s;
+  -ms-transition: 0.25s;
+  -moz-transition: 0.25s;
+  -webkit-transition: 0.25s;
+  /* ...and now for the proper property */
+  transition: 0.25s;
+}
 
 .fakelink {
   cursor: pointer;
   text-decoration: underline;
-  color: #FFBAD2;
+  color: #ffbad2;
 }
- .fakelink:hover {
-   color: #e56390;
-   -o-transition:.25s;
--ms-transition:.25s;
--moz-transition:.25s;
--webkit-transition:.25s;
-/* ...and now for the proper property */
-transition:.25s;
- }
+.fakelink:hover {
+  color: #e56390;
+  -o-transition: 0.25s;
+  -ms-transition: 0.25s;
+  -moz-transition: 0.25s;
+  -webkit-transition: 0.25s;
+  /* ...and now for the proper property */
+  transition: 0.25s;
+}
 
 .hclogo {
   height: 25px;
@@ -65,31 +65,31 @@ transition:.25s;
   padding: 3px;
   margin-right: 5px;
 }
- main {
-   height: 100%;
+main {
+  height: 100%;
   background-color: white;
- }
+}
 
- div#test {
-   height: 100%;
-   max-width: 720px;
-   margin: auto;
- }
+div#test {
+  height: 100%;
+  max-width: 720px;
+  margin: auto;
+}
 
 * {
   font-size: 20px;
   box-sizing: content-box;
-  color: #5C604D;
+  color: #5c604d;
 }
 
-#gameCode{
+#gameCode {
   width: 150px;
-  text-transform:uppercase;
+  text-transform: uppercase;
 }
 .parentWrapper {
   height: 100%;
 }
-.table-outer{
+.table-outer {
   display: table;
   overflow: hidden;
   height: 100%;
@@ -113,8 +113,7 @@ transition:.25s;
   }
 }
 
-@media only screen
-and (max-device-width : 500px) {
+@media only screen and (max-device-width: 500px) {
   img.bflogo {
     width: 200px !important;
     height: 200px !important;
@@ -123,8 +122,7 @@ and (max-device-width : 500px) {
   }
 }
 
-@media only screen
-and (max-device-width : 400px) {
+@media only screen and (max-device-width: 400px) {
   img.bflogo {
     width: 175px !important;
     height: 175px !important;
@@ -133,20 +131,20 @@ and (max-device-width : 400px) {
   }
 }
 
-.table-inner{
-  display: table-cell; vertical-align: middle;
+.table-inner {
+  display: table-cell;
+  vertical-align: middle;
   padding: 10px;
   padding-bottom: 40px;
 }
 
 .footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 14px;
-
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
 }
 
 .footer-inner {
@@ -155,7 +153,7 @@ and (max-device-width : 400px) {
 }
 
 .footer a {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 14px;
 }
 .footer span {
@@ -174,7 +172,6 @@ and (max-device-width : 400px) {
   margin-bottom: 20px;
 }
 
-
 img#bflogo {
   width: 250px;
   height: 250px;
@@ -182,28 +179,28 @@ img#bflogo {
 }
 
 h1.heroname {
-  font-family: "Indie Flower", cursive;
+  font-family: 'Indie Flower', cursive;
   margin: 0px;
   font-size: 60px;
-  color: #FFBAD2;
+  color: #ffbad2;
   padding: 0px;
   margin-bottom: -5px;
 }
 
 input {
-  font-family: "Indie Flower", cursive;
+  font-family: 'Indie Flower', cursive;
 }
 
 h1.title {
   font-size: 40px;
-  font-family: "Indie Flower", cursive;
+  font-family: 'Indie Flower', cursive;
   margin: 0;
-  background-color: #FFBAD2;
+  background-color: #ffbad2;
 }
 
 .drawWrapper {
-    width: 100%;
-    text-align: center;
+  width: 100%;
+  text-align: center;
 }
 
 .headerSection {
@@ -260,40 +257,69 @@ a.active {
   color: #aaaaaa;
 }
 
-
 svg:hover {
   fill: #e56390 !important;
-  -o-transition:.25s;
--ms-transition:.25s;
--moz-transition:.25s;
--webkit-transition:.25s;
-/* ...and now for the proper property */
-transition:.25s;
+  -o-transition: 0.25s;
+  -ms-transition: 0.25s;
+  -moz-transition: 0.25s;
+  -webkit-transition: 0.25s;
+  /* ...and now for the proper property */
+  transition: 0.25s;
 }
-.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+.github-corner:hover .octo-arm {
+  animation: octocat-wave 560ms ease-in-out;
+}
+@keyframes octocat-wave {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20%,
+  60% {
+    transform: rotate(-25deg);
+  }
+  40%,
+  80% {
+    transform: rotate(10deg);
+  }
+}
+@media (max-width: 500px) {
+  .github-corner:hover .octo-arm {
+    animation: none;
+  }
+  .github-corner .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
+  }
+}
 
-:-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color:    #ccc;
+:-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  color: #ccc;
 }
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color:    #ccc;
-   opacity:  1;
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #ccc;
+  opacity: 1;
 }
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color:    #ccc;
-   opacity:  1;
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #ccc;
+  opacity: 1;
 }
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-   color:    #ccc;
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #ccc;
 }
-::-ms-input-placeholder { /* Microsoft Edge */
-   color:    #ccc;
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #ccc;
 }
 
-::placeholder { /* Most modern browsers support this now. */
-   color:    #ccc;
+::placeholder {
+  /* Most modern browsers support this now. */
+  color: #ccc;
 }
 
 .white {
-  color: white !important ;
+  color: white !important;
 }
