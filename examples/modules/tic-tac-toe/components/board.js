@@ -519,6 +519,16 @@ class Board extends React.Component {
 
     }
 
+    let score_display = null;
+    score_display = (
+      <div id="scoreDisplay">
+      <div id="humanScore" className="scoreContainer"><h2>You</h2><p className="score">{this.props.G.playerScore}</p></div>
+      <div id="AIScore" className="scoreContainer"><h2>AI</h2><p className="score">{this.props.G.aiScore}</p></div>
+      </div>
+    )
+
+    let game_code = (<div id="gameCode"><p className="codeName">Code</p><p className="code">{this.props.gameID}</p></div>)
+
     let guess_form = null;
     // Player 2 (guesser) logic (TODO: don't forget about traitor)
     if (this.props.playerID !== null && this.props.playerID === "2") {
@@ -559,6 +569,7 @@ class Board extends React.Component {
 
     return (
       <div>
+
         <div id="overlay" ref={overlay => {this.overlay = overlay;}}>
           <p>The topic was: {this.props.G.previousTopics[this.props.G.previousTopics.length - 1]}</p>
           <p>The player guessed: {this.props.G.lastPlayerGuess}</p>
@@ -575,6 +586,8 @@ class Board extends React.Component {
           <br />
         </div>
         {guess_form}
+        {score_display}
+        {game_code}
         {winner}
       </div>
     );

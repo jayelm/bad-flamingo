@@ -23,6 +23,7 @@ input {
 }
  #player {
    font-size: 24px;
+   display: inline-block;
  }
 
 #board {
@@ -97,4 +98,122 @@ td.active:hover {
   height: 100%;
   top: 0;
   left: 0;
+}
+
+#scoreDisplay {
+  margin-top: 10px;
+  width: 160px;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  margin-left: 40px;
+  height: 75px;
+}
+
+#gameCode {
+  margin-top: 10px;
+  width: 100px;
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  margin-right: 15px;
+  top: 0;
+  font-family: "Indie Flower", cursive;
+  height: 75px;
+}
+
+#gameCode p.codeName {
+  font-size: 30px;
+  color: #FFBAD2;
+  margin: 0;
+  padding: 0;
+  margin-bottom: -10px;
+
+  font-family: "Indie Flower";
+}
+
+#gameCode p.code {
+  font-family: "Open Sans";
+  font-size: 30px;
+  margin: 0px;
+}
+
+.scoreContainer {
+  display: inline-block;
+  width: 50px;
+  font-size: 30px;
+}
+#humanScore {
+  margin-right: 10px;
+}
+
+#AIScore {
+  margin-left: 10px;
+}
+
+@media only screen and
+(max-width: 600px) {
+
+}
+
+@media only screen
+and (max-device-width : 500px) {
+  #scoreDisplay {
+    display: block;
+    position: relative;
+    margin: auto;
+    bottom: 0;
+    margin-top: 10px;
+  }
+}
+
+@media only screen
+and (max-device-width : 400px) {
+  #scoreDisplay {
+    display: block;
+    bottom: 0;
+    position: relative;
+    margin: auto;
+    margin-top: 10px;
+  }
+}
+
+#scoreDisplay {
+  width: 160px;
+  display: inline-block;
+  left: 0;
+  top: 0;
+  position: absolute;
+  margin: auto;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+#scoreDisplay h2 {
+  font-family: "Indie Flower", cursive;
+    color: #FFBAD2;
+  margin: 0px;
+
+  font-size: 30px;
+  margin-bottom: -10px;
+
+  -webkit-user-select: none; /* Chrome/Safari */
+-moz-user-select: none; /* Firefox */
+-ms-user-select: none; /* IE10+ */
+
+/* Rules below not implemented in browsers yet */
+-o-user-select: none;
+}
+
+#scoreDisplay .score {
+  font-size: 30px;
+  font-family: "Open Sans", sans-serif;
+  margin: 0px;
+
+  -webkit-user-select: none; /* Chrome/Safari */
+-moz-user-select: none; /* Firefox */
+-ms-user-select: none; /* IE10+ */
+
+/* Rules below not implemented in browsers yet */
+-o-user-select: none;
 }
