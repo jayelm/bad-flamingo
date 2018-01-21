@@ -20,26 +20,20 @@ class Main extends React.Component {
     this.state = {
       imgSrc: 'http://colinmorris.github.io/assets/quickdraw/svgs/bottom/awful/0.svg'
     }
-    this.images = [
-      "http://colinmorris.github.io/assets/quickdraw/svgs/bottom/awful/1.svg",
-      "http://colinmorris.github.io/assets/quickdraw/svgs/bottom/awful/2.svg",
-      "http://colinmorris.github.io/assets/quickdraw/svgs/bottom/awful/3.svg",
-      "http://colinmorris.github.io/assets/quickdraw/svgs/bottom/awful/4.svg",
-      "http://colinmorris.github.io/assets/quickdraw/svgs/bottom/awful/5.svg",
-      "http://colinmorris.github.io/assets/quickdraw/svgs/bottom/awful/0.svg",
-
-    ]
     this.idx = 0
   }
 
   componentDidMount() {
     setInterval(() => {
       this.setState({
-        imgSrc: this.images[this.idx]
+        imgSrc: "http://colinmorris.github.io/assets/quickdraw/svgs/bottom/awful/" + this.idx + ".svg"
       })
         this.idx = this.idx + 1
+        if (this.idx > 27) {
+          this.idx = 0;
+        }
     }
-, 5000);
+, 4000);
     var images = [], x = -1;
   }
 
@@ -58,7 +52,7 @@ class Main extends React.Component {
             <div className="hero">
               <img src={this.state.imgSrc} id="bflogo" ref={bflogo => {this.bflogo = bflogo;}}></img>
               <h1 className="heroname">Bad Flamingo</h1>
-              <p>Draw with your friends and fool the computer!</p>
+              <p>Fool the computer, but not your friends!</p>
               <button>New</button><br></br><br></br>
               <input id="gameCode" type="text" name="gameCode" placeholder="game code"></input><br></br>
               <button>Join</button>

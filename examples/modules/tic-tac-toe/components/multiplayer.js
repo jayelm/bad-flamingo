@@ -33,12 +33,12 @@ const Multiplayer = props => {
       <section className="drawWrapper">
         <div className="headerSection">
           <h1 className="title">Bad Flamingo</h1>
-          <div style={{ padding: 0 }}>
+          </div>
+          <div className="gameContainer">
               <App
                 gameID={props.match.params.gameid}
                 playerID={props.match.params.playerid}
               />
-          </div>
           </div>
       </section>
   );
