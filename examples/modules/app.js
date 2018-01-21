@@ -93,7 +93,7 @@ class Main extends React.Component {
               <br />
               <br />
               <input
-                id="gameCode"
+                id="heroGameCode"
                 type="text"
                 name="gameCode"
                 placeholder="code"

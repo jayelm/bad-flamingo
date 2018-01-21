@@ -6,6 +6,10 @@
  * https://opensource.org/licenses/MIT.
  */
 
+ strong {
+   color: black;
+ }
+
 html,
 body {
   height: 100%;
@@ -82,7 +86,7 @@ div#test {
   color: #5c604d;
 }
 
-#gameCode {
+#heroGameCode {
   width: 150px;
   text-transform: uppercase;
 }

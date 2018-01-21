@@ -49,14 +49,13 @@ class Board extends React.Component {
   }
 
   displayLastRound() {
-    console.log('calling thisDisplayLastRound');
-    console.log('setting display block');
-    console.log(this.overlay.style.display);
     this.overlay.style.display = 'block';
+    this.canvas.style.display = 'none';
     // TODO: Make this a bit more exciting - if possible, keep the image displayed
     setTimeout(() => {
       console.log('setting back to none');
       this.overlay.style.display = 'none';
+      this.canvas.style.display = 'block';
     }, 6000);
   }
 
@@ -521,7 +520,7 @@ class Board extends React.Component {
             <div id="player">
               <p>
                 You are the <strong>traitor</strong>.
-                <br />Modify the image to help the AI understand the drawing.
+                <br />Help the AI understand the drawing.
               </p>
             </div>
           );
@@ -550,6 +549,16 @@ class Board extends React.Component {
         playerPrompt = <div id="player">UNKNOWN PLAYER</div>;
       }
     }
+
+    let score_display = null;
+    score_display = (
+      <div id="scoreDisplay">
+      <div id="humanScore" className="scoreContainer"><h2>You</h2><p className="score">{this.props.G.playerScore}</p></div>
+      <div id="AIScore" className="scoreContainer"><h2>AI</h2><p className="score">{this.props.G.aiScore}</p></div>
+      </div>
+    )
+
+    let game_code = (<div id="gameCode"><p className="codeName">Code</p><p className="code">{this.props.gameID}</p></div>)
 
     let guess_form = null;
     // Player 2 (guesser) logic (TODO: don't forget about traitor)
@@ -601,30 +610,6 @@ class Board extends React.Component {
 
     return (
       <div>
-        <div
-          id="overlay"
-          ref={overlay => {
-            this.overlay = overlay;
-          }}
-        >
-          <p>
-            The topic was:{' '}
-            {
-              this.props.G.previousTopics[
-                this.props.G.previousTopics.length - 1
-              ]
-            }
-          </p>
-          <p>The player guessed: {this.props.G.lastPlayerGuess}</p>
-          <p>
-            The AI guessed:{' '}
-            {this.props.G.lastNNGuesses &&
-              JSON.stringify(this.props.G.lastNNGuesses.slice(0, 3))}...
-          </p>
-          <p>
-            The score is {this.props.G.playerScore} to {this.props.G.aiScore}
-          </p>
-        </div>
         {playerPrompt}
         <div id="wrapper">
           <canvas
@@ -632,9 +617,28 @@ class Board extends React.Component {
               this.canvas = canvas;
             }}
           />
-          <br />
+          <div
+            id="overlay"
+            ref={overlay => {
+              this.overlay = overlay;
+            }}
+          >
+            <p>
+              The drawing was <strong>{
+                this.props.G.previousTopics[
+                  this.props.G.previousTopics.length - 1
+                ]
+              }</strong>
+            </p>
+            <p>The player guessed <strong>{this.props.G.lastPlayerGuess}</strong></p>
+            <p>
+              The AI guessed <strong>{this.props.G.lastNNGuesses &&
+                this.props.G.lastNNGuesses[0][0]}</strong></p>
+          </div>
         </div>
         {guess_form}
+        {score_display}
+        {game_code}
         {winner}
       </div>
     );
