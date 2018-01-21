@@ -110,7 +110,7 @@ class Main extends React.Component {
               />
               <br />
               <button>Join</button>
-              <Link to={"/" + this.gameCodeInput.value + "/2"}><button>New</button></Link>
+              <Link to={"/" + "1" + "/2"}><button>New</button></Link>
             </div>
           </div>
         </div>
