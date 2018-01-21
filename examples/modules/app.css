@@ -6,12 +6,43 @@
  * https://opensource.org/licenses/MIT.
  */
 
+html,
+body {
+    height: 100%;
+}
+
+p {
+  font-family: "Open Sans", sans-serif;
+}
+
  body {
-   background-color: #FFBAD2;
+   margin: 0;
  }
 
  canvas {
    background-color: white;
+ }
+
+ a {
+   font-family: "Open Sans", sans-serif;
+
+ }
+
+.hclogo {
+  height: 25px;
+  width: 25px;
+  vertical-align: middle;
+  padding: 3px;
+}
+ main {
+   height: 100%;
+  background-color: white;
+ }
+
+ div#test {
+   height: 100%;
+   max-width: 720px;
+   margin: auto;
  }
 
 * {
@@ -21,9 +52,66 @@
   color: #5C604D;
 }
 
+#gameCode{
+  width: 150px;
+}
+.parentWrapper {
+  height: 100%;
+}
+.table-outer{
+  display: table;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+.hcinfo {
+  float: left;
+  margin-left: 24px;
+  margin-bottom: 8px;
+}
+.table-inner{
+  display: table-cell; vertical-align: middle;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: black;
+    text-align: center;
+}
+
+.footer-inner {
+  margin: auto;
+  width: 100%;
+}
+
+.footer a {
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+}
+
+.footer p {
+  font-size: 14px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+h1.heroname {
+  margin: 0px;
+  padding: 20px;
+  font-size: 60px;
+  color: #FFBAD2;
+}
+
 h1.title {
   font-size: 40px;
   font-family: "Indie Flower";
+  padding: 10px;
+  margin: 0;
+  background-color: #FFBAD2;
 }
 
 .drawWrapper {
@@ -69,3 +157,6 @@ a.active {
   max-height: 120px;
   margin-top: 10px;
 }
+
+
+.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
