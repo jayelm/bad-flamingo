@@ -9,7 +9,6 @@
 #overlay {
   display: none;
   width: 100%;
-  position: fixed;
   height: 100%;
   background: white;
 }
@@ -62,7 +61,7 @@ canvas {
   border: 4px solid #5c604d;
   width: 70vmin;
   cursor: pointer;
-  margin-right: 0px;
+  margin: auto;
 }
 
 #winner {
