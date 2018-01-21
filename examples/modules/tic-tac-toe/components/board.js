@@ -607,6 +607,31 @@ class Board extends React.Component {
       );
     }
 
+    let aiGuessWin = this.props.G.winResult !== null && (
+      this.props.G.winResult.win == 'ai' ||
+      this.props.G.winResult.win == 'both');
+
+    let winMessage = (this.props.G.winResult !== null) ? (
+      (this.props.G.winResult.win == 'neither') ? (
+        "Sure you drew this correctly? No one got it!"
+      ) : (
+        (aiGuessWin) ? (
+          (
+            this.props.G.winResult.win == 'both' ?
+            (
+              "The guesser got the drawing, but so did the AI - AI wins!"
+            ) : (
+              "Gotta be cleverer? AI wins!"
+            )
+          )
+        ) : (
+          "Nice drawing - you fooled the AI!"
+        )
+      )
+    ) : (
+      ""
+    )
+
     return (
       <div>
         {playerPrompt}
@@ -625,8 +650,8 @@ class Board extends React.Component {
           </p>
           <p>The player guessed <strong>{this.props.G.lastPlayerGuess}</strong></p>
           <p>
-            The AI guessed <strong>{this.props.G.lastNNGuesses &&
-              this.props.G.lastNNGuesses[0][0]}</strong></p>
+            The AI {(aiGuessWin) ? "guessed" : "guessed"} <strong>{(this.props.G.winResult !== null) ? (aiGuessWin ? this.props.G.previousTopics[this.props.G.previousTopics.length - 1] : this.props.G.lastNNGuesses[0][0]) : ""}</strong>{(aiGuessWin) ? "!" : ""}</p>
+          <p>{winMessage}</p>
         </div>
         <div id="wrapper">
           <canvas
