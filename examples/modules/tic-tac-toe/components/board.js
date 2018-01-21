@@ -49,12 +49,12 @@ class Board extends React.Component {
 
   displayLastRound() {
     this.overlay.style.display = 'block';
-    this.canvas.style.display = 'none';
+    // this.canvas.style.display = 'none';
     // TODO: Make this a bit more exciting - if possible, keep the image displayed
     setTimeout(() => {
       console.log('setting back to none');
       this.overlay.style.display = 'none';
-      this.canvas.style.display = 'block';
+      // this.canvas.style.display = 'block';
     }, 6000);
   }
 
@@ -333,7 +333,7 @@ class Board extends React.Component {
 
     // Init HTTP Request
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', url, false);
+    xhr.open('POST', url);
     Object.keys(headers).forEach(function(key, index) {
       xhr.setRequestHeader(key, headers[key]);
     });
@@ -610,35 +610,36 @@ class Board extends React.Component {
     return (
       <div>
         {playerPrompt}
+                        <div
+          id="overlay"
+          ref={overlay => {
+            this.overlay = overlay;
+          }}
+        >
+          <p>
+            The drawing was <strong>{
+              this.props.G.previousTopics[
+                this.props.G.previousTopics.length - 1
+              ]
+            }</strong>
+          </p>
+          <p>The player guessed <strong>{this.props.G.lastPlayerGuess}</strong></p>
+          <p>
+            The AI guessed <strong>{this.props.G.lastNNGuesses &&
+              this.props.G.lastNNGuesses[0][0]}</strong></p>
+        </div>
         <div id="wrapper">
           <canvas
             ref={canvas => {
               this.canvas = canvas;
             }}
           />
-          <div
-            id="overlay"
-            ref={overlay => {
-              this.overlay = overlay;
-            }}
-          >
-            <p>
-              The drawing was <strong>{
-                this.props.G.previousTopics[
-                  this.props.G.previousTopics.length - 1
-                ]
-              }</strong>
-            </p>
-            <p>The player guessed <strong>{this.props.G.lastPlayerGuess}</strong></p>
-            <p>
-              The AI guessed <strong>{this.props.G.lastNNGuesses &&
-                this.props.G.lastNNGuesses[0][0]}</strong></p>
-          </div>
         </div>
         {guess_form}
         {score_display}
         {game_code}
         {winner}
+
       </div>
     );
   }
