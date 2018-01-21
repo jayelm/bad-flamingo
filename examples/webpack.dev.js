@@ -17,7 +17,7 @@ module.exports = {
   entry: ['webpack-hot-middleware/client', path.resolve(__dirname, 'index.js')],
 
   node: {
-    fs: 'empty'
+    fs: 'empty',
   },
 
   output: {

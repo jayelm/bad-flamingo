@@ -16,16 +16,8 @@ import TOPICS from '../topics';
 import horsey from 'horsey';
 import './horsey.css';
 
-
-
-const REAL_PLAYER_NAMES = [
-  'drawer',
-  'traitor',
-  'guesser'
-]
-console.log(TOPICS)
-
-
+const REAL_PLAYER_NAMES = ['drawer', 'traitor', 'guesser'];
+console.log(TOPICS);
 
 class Board extends React.Component {
   static propTypes = {
@@ -119,7 +111,7 @@ class Board extends React.Component {
   drawInk() {
     this.clonepathinks = JSON.parse(JSON.stringify(this.pathinks));
     if (this.paths) {
-      this.paths.forEach(path => path.remove())
+      this.paths.forEach(path => path.remove());
     }
     this.paths = [];
     Object.keys(this.pathinks).forEach(thispath => {
@@ -145,8 +137,7 @@ class Board extends React.Component {
     horsey(this.guess, {
       debounce: 10,
       limit: 4,
-      source: [{list: TOPICS}],
-
+      source: [{ list: TOPICS }],
     });
   }
 
@@ -242,7 +233,7 @@ class Board extends React.Component {
   // Clear Paper Drawing Canvas
   clearDrawing() {
     // Remove Paper Path Layer
-    this.paths.forEach(path => path.remove())
+    this.paths.forEach(path => path.remove());
 
     // Init Ink Array
     this.initInk();
@@ -282,14 +273,13 @@ class Board extends React.Component {
   submitTraitor() {
     // this.pathinks = this.clonepathinks
 
-    this.checkQuickDraw()
-
+    this.checkQuickDraw();
   }
 
-  getCanvasDimensions(){
+  getCanvasDimensions() {
     var w = this.canvas.offsetWidth;
     var h = this.canvas.offsetHeight;
-    return {height: h, width: w};
+    return { height: h, width: w };
   }
 
   checkQuickDraw() {
@@ -308,7 +298,7 @@ class Board extends React.Component {
 
     // Init HTTP Request
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', url,false);
+    xhr.open('POST', url, false);
     Object.keys(headers).forEach(function(key, index) {
       xhr.setRequestHeader(key, headers[key]);
     });
@@ -322,7 +312,6 @@ class Board extends React.Component {
         console.log('Request failed.  Returned status of ' + xhr.status);
       }
     };
-
 
     // Create New Data Payload for Quickdraw Google AI API
     var data = {
@@ -351,9 +340,13 @@ class Board extends React.Component {
     this.scores = JSON.parse(
       res_j[1][0][3].debug_info.match(/SCORESINKS: (.+) Combiner:/)[1]
     );
-    var p_title = 'BEST GUESS: ' + this.scores[0][0] + ' (' + this.scores[0][1] + ')';
-    console.log(p_title)
-    this.props.moves.submitTraitor([this.exportPathInks(this.clonepathinks), this.scores])
+    var p_title =
+      'BEST GUESS: ' + this.scores[0][0] + ' (' + this.scores[0][1] + ')';
+    console.log(p_title);
+    this.props.moves.submitTraitor([
+      this.exportPathInks(this.clonepathinks),
+      this.scores,
+    ]);
     // Add New Guess Scores to Score History
     // updateScoresHistory();
     // Plot Guess Scores
@@ -402,11 +395,15 @@ class Board extends React.Component {
     if (this.props.ctx.gameover !== undefined) {
       winner = (
         <div id="results">
-        <div id="winner">Winner: {this.props.ctx.gameover.win}</div>
-        <div id="playerGuess">Player Guess: {this.props.ctx.gameover.playerGuess}</div>
-        <div id="nnGuess">AI Guess: {JSON.stringify(this.props.ctx.gameover.nnGuesses)}</div>
+          <div id="winner">Winner: {this.props.ctx.gameover.win}</div>
+          <div id="playerGuess">
+            Player Guess: {this.props.ctx.gameover.playerGuess}
+          </div>
+          <div id="nnGuess">
+            AI Guess: {JSON.stringify(this.props.ctx.gameover.nnGuesses)}
+          </div>
         </div>
-      )
+      );
     }
     if (this.props.G.editedPathinks !== null) {
       this.pathinks = this.importPathInks(this.props.G.editedPathinks);
@@ -414,12 +411,15 @@ class Board extends React.Component {
       this.pathinks = this.importPathInks(this.props.G.pathinks);
     }
 
-    let phase = <div id="phase">Phase: {this.props.ctx.phase}</div>
+    let phase = <div id="phase">Phase: {this.props.ctx.phase}</div>;
 
     let player = null;
     if (this.props.playerID !== null) {
-      player = <div id="player">You are the <strong>{REAL_PLAYER_NAMES[this.props.playerID]}</strong>
-        </div>;
+      player = (
+        <div id="player">
+          You are the <strong>{REAL_PLAYER_NAMES[this.props.playerID]}</strong>
+        </div>
+      );
     }
     let game = null;
     if (this.props.gameID !== null) {
@@ -428,22 +428,38 @@ class Board extends React.Component {
     let topic = null;
 
     // Player 0 (drawer) logic
-    if (this.props.playerID !== null && this.props.playerID === "0") {
-      topic = <div id="topic">Draw a <strong>{this.props.G.topic}</strong></div>;
+    if (this.props.playerID !== null && this.props.playerID === '0') {
+      topic = (
+        <div id="topic">
+          Draw a <strong>{this.props.G.topic}</strong>
+        </div>
+      );
     }
 
     let guess_form = null;
     // Player 1 (guesser) logic (TODO: don't forget about traitor)
-    if (this.props.playerID !== null && this.props.playerID === "2") {
+    if (this.props.playerID !== null && this.props.playerID === '2') {
       guess_form = (
         <div id="guessform">
-        <p>Your guess:</p><br></br>
-        <input ref={guess => {this.guess = guess;}}
-          id="df" type="text" name="guess"></input>
-        <button className="w3-btn w3-ripple w3-red" id="guessSubmit"
-         onClick={() => this.submitGuess()}>Submit Guess</button>
-         </div>
-      )
+          <p>Your guess:</p>
+          <br />
+          <input
+            ref={guess => {
+              this.guess = guess;
+            }}
+            id="df"
+            type="text"
+            name="guess"
+          />
+          <button
+            className="w3-btn w3-ripple w3-red"
+            id="guessSubmit"
+            onClick={() => this.submitGuess()}
+          >
+            Submit Guess
+          </button>
+        </div>
+      );
     }
 
     return (
@@ -468,8 +484,8 @@ class Board extends React.Component {
           className="w3-btn w3-ripple w3-green"
           onClick={() => this.submit()}
           ref={submitButton => {
-              this.submitButton = submitButton;
-            }}
+            this.submitButton = submitButton;
+          }}
         >
           Submit
         </button>

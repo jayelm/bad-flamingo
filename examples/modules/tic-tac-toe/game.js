@@ -6,8 +6,8 @@
  * https://opensource.org/licenses/MIT.
  */
 
- const NN_TOP_GUESSES = 5;
- const FIRST_TO_N = 5;
+const NN_TOP_GUESSES = 5;
+const FIRST_TO_N = 5;
 
 import TOPICS from './topics';
 
@@ -17,7 +17,7 @@ function randomTopic(veto) {
   if (veto !== undefined) {
     // TODO: make this different
   }
-  return TOPICS[Math.floor(Math.random() * TOPICS.length)]
+  return TOPICS[Math.floor(Math.random() * TOPICS.length)];
 }
 
 function nnWins(nnGuesses, topic) {
@@ -37,20 +37,20 @@ function getWinResult(G, ctx) {
     var nnWin = nnWins(G.nnGuesses, G.topic);
     var playerWin = G.playerGuess === G.topic;
     if (playerWin && nnWin) {
-      win = "both";
+      win = 'both';
     } else if (playerWin) {
-      win = "guesser";
+      win = 'guesser';
     } else if (nnWin) {
-      win = "ai";
+      win = 'ai';
     } else {
-      win = "neither";
+      win = 'neither';
     }
     return {
       win: win,
       playerGuess: G.playerGuess,
       nnGuesses: G.nnGuesses,
       nnTopN: NN_TOP_GUESSES,
-    }
+    };
   }
 }
 
@@ -68,32 +68,33 @@ const TicTacToe = Game({
     playerScore: 0,
     aiScore: 0,
     lastPlayerGuess: null,
-    lastNNGuesses: null
+    lastNNGuesses: null,
   }),
 
   moves: {
     submitDraw(G, ctx, pathinks) {
-      console.log("submitDraw");
+      console.log('submitDraw');
       return { ...G, pathinks };
     },
     submitGuess(G, ctx, playerGuess) {
-      console.log("submitGuess");
+      console.log('submitGuess');
       return { ...G, playerGuess };
     },
     submitTraitor(G, ctx, [editedPathinks, nnGuesses]) {
-      console.log("submitTraitor");
-      return { ...G, editedPathinks, nnGuesses};
-    }  },
+      console.log('submitTraitor');
+      return { ...G, editedPathinks, nnGuesses };
+    },
+  },
 
   flow: {
     movesPerTurn: 1,
 
     endGameIf: (G, ctx) => {
       if (G.playerScore === FIRST_TO_N) {
-        return "player";
+        return 'player';
       }
       if (G.aiScore == FIRST_TO_N) {
-        return "AI";
+        return 'AI';
       }
     },
 
@@ -104,11 +105,11 @@ const TicTacToe = Game({
         onPhaseBegin: (G, ctx) => {
           return {
             ...G,
-            topic: randomTopic()
-          }
+            topic: randomTopic(),
+          };
         },
         endPhaseIf: G => G.pathinks !== null,
-        turnOrder: TurnOrder.ANY
+        turnOrder: TurnOrder.ANY,
       },
 
       {
@@ -120,8 +121,14 @@ const TicTacToe = Game({
           // Reset guesses, etc for next round
           return {
             ...G,
-            playerScore: (winResult.win === 'guesser' || winResult.win == 'both') ? G.playerScore + 1 : G.playerScore,
-            aiScore: (winResult.win === 'ai' || winResult.win == 'both') ? G.aiScore + 1 : G.aiScore,
+            playerScore:
+              winResult.win === 'guesser' || winResult.win == 'both'
+                ? G.playerScore + 1
+                : G.playerScore,
+            aiScore:
+              winResult.win === 'ai' || winResult.win == 'both'
+                ? G.aiScore + 1
+                : G.aiScore,
             topic: null,
             previousTopics: [...G.previousTopics, G.topic],
             round: G.round + 1,
@@ -130,10 +137,10 @@ const TicTacToe = Game({
             nnGuesses: null,
             editedPathinks: null,
             lastPlayerGuess: winResult.playerGuess,
-            lastNNGuesses: winResult.nnGuesses
+            lastNNGuesses: winResult.nnGuesses,
           };
         },
-        turnOrder: TurnOrder.ANY
+        turnOrder: TurnOrder.ANY,
       },
     ],
   },
