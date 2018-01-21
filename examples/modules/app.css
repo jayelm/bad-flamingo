@@ -9,6 +9,7 @@
 html,
 body {
     height: 100%;
+    font-family: "Open Sans"
 }
 
 strong {
@@ -42,6 +43,21 @@ p {
 transition:.25s;
  }
 
+.fakelink {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #FFBAD2;
+}
+ .fakelink:hover {
+   color: #e56390;
+   -o-transition:.25s;
+-ms-transition:.25s;
+-moz-transition:.25s;
+-webkit-transition:.25s;
+/* ...and now for the proper property */
+transition:.25s;
+ }
+
 .hclogo {
   height: 25px;
   width: 25px;
@@ -62,13 +78,13 @@ transition:.25s;
 
 * {
   font-size: 20px;
-  font-family: "Indie Flower", sans-serif;
   box-sizing: content-box;
   color: #5C604D;
 }
 
 #gameCode{
   width: 150px;
+  text-transform:uppercase;
 }
 .parentWrapper {
   height: 100%;
@@ -90,14 +106,37 @@ transition:.25s;
 @media only screen and (max-width: 600px) {
   .hcinfo {
     float: none;
+    margin-bottom: 0px;
   }
   .hclogo {
     display: none;
   }
 }
 
+@media only screen
+and (max-device-width : 500px) {
+  img.bflogo {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  .table-inner {
+  }
+}
+
+@media only screen
+and (max-device-width : 400px) {
+  img.bflogo {
+    width: 175px !important;
+    height: 175px !important;
+  }
+  .table-inner {
+  }
+}
+
 .table-inner{
   display: table-cell; vertical-align: middle;
+  padding: 10px;
+  padding-bottom: 40px;
 }
 
 .footer {
@@ -105,8 +144,9 @@ transition:.25s;
     left: 0;
     bottom: 0;
     width: 100%;
-    color: black;
     text-align: center;
+    font-size: 14px;
+
 }
 
 .footer-inner {
@@ -118,11 +158,14 @@ transition:.25s;
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
 }
+.footer span {
+  font-size: 14px;
+}
 
 .footer p {
-  font-size: 14px;
   display: inline-block;
   vertical-align: middle;
+  font-size: 14px;
 }
 .hero p {
   max-width: 500px;
@@ -139,11 +182,16 @@ img#bflogo {
 }
 
 h1.heroname {
+  font-family: "Indie Flower", cursive;
   margin: 0px;
   font-size: 60px;
   color: #FFBAD2;
   padding: 0px;
   margin-bottom: -5px;
+}
+
+input {
+  font-family: "Indie Flower", cursive;
 }
 
 h1.title {
@@ -208,6 +256,10 @@ a.active {
   margin-top: 10px;
 }
 
+.gray {
+  color: #aaaaaa;
+}
+
 
 svg:hover {
   fill: #e56390 !important;
@@ -219,3 +271,29 @@ svg:hover {
 transition:.25s;
 }
 .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+
+:-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #ccc;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #ccc;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #ccc;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #ccc;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+   color:    #ccc;
+}
+
+::placeholder { /* Most modern browsers support this now. */
+   color:    #ccc;
+}
+
+.white {
+  color: white !important ;
+}

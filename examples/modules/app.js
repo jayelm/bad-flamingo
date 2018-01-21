@@ -50,11 +50,11 @@ class Main extends React.Component {
         <div className="table-outer">
           <div className="table-inner">
             <div className="hero">
-              <img src={this.state.imgSrc} id="bflogo" ref={bflogo => {this.bflogo = bflogo;}}></img>
+              <img src={this.state.imgSrc} class="bflogo" ref={bflogo => {this.bflogo = bflogo;}}></img>
               <h1 className="heroname">Bad Flamingo</h1>
               <p>Fool the computer, but not your friends!</p>
               <button>New</button><br></br><br></br>
-              <input id="gameCode" type="text" name="gameCode" placeholder="game code"></input><br></br>
+              <input id="gameCode" type="text" name="gameCode" placeholder="code" maxLength="4"></input><br></br>
               <button>Join</button>
             </div>
           </div>
@@ -63,11 +63,23 @@ class Main extends React.Component {
           <div className="footer-inner">
           <div className="hcinfo">
             <a href="https://hackcambridge.com"><img className="hclogo" src="https://hackcambridge.com/assets/images/logo.656e63b3.svg"></img></a>
-            <p>A <a href="https://hackcambridge.com/">Hack Cambridge Ternary</a> Project in memory of <a href="http://colinmorris.github.io/blog/bad_flamingos">bad flamingos</a> worldwide</p>
+            <p>A <a href="https://hackcambridge.com/">Hack Cambridge Ternary</a> project in memory of <a href="http://colinmorris.github.io/blog/bad_flamingos">bad flamingos</a> worldwide &nbsp;<span className="gray">●</span>&nbsp; <span className="fakelink">Why?</span></p>
           </div>
           </div>
         </div>
-
+        <div className="why">
+        <div className="table-outer">
+          <div className="table-inner">
+            <div className="hero">
+              <img style={{display: "none"}} src={this.state.imgSrc} class="bflogo"></img>
+              <h1 className="heroname white">Why?</h1>
+              <br></br>
+              <p className="white">Because it's fun.</p>
+              <p className="white">Also, because adversarial examples</p>
+            </div>
+          </div>
+        </div>
+        </div>
         </div>
       );
     }

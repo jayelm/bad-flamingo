@@ -42,6 +42,7 @@ button {
   font-size: 30px;
   text-align: center;
   line-height: 50px;
+  font-family: "Indie Flower", cursive;
 }
 
 button:hover {
@@ -84,4 +85,16 @@ td.active {
 
 td.active:hover {
   background: #eeffff;
+}
+
+
+.why {
+  visibility: hidden;
+  position: fixed;
+  z-index: 10;
+  background-color: rgba(229, 99, 144, 1);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
 }
