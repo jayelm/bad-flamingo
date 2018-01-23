@@ -2,8 +2,6 @@
   <img src="./img/logo.png"/>
 </p>
 
----
-
 <p align="center">
   <em>A <a href="https://hackcambridge.com/">Hack Cambridge Ternary</a> project</em>
 </p>
