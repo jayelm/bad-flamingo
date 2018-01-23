@@ -4,9 +4,11 @@
 
 ---
 
-*A [Hack Cambridge Ternary](https://hackcambridge.com/) project*
+<p align="center">
+  <em>A <a href="https://hackcambridge.com/">Hack Cambridge Ternary</a> project</em>
+</p>
 
-**Pictionary, with an AI twist!**
+# Pictionary, with an AI twist
 
 You, the **drawer**, create a drawing of a certain word or phrase. Your friend,
 the **guesser**, tries to guess what that word is, by looking at your
@@ -34,7 +36,7 @@ humans can understand, but ML models cannot. Playing Bad Flamingo will thus
 generate more difficult datasets for modern ML models and encourage further
 research in robust, human-like computer vision.
 
-## Instructions
+# Instructions
 
 To start the server, run
 
@@ -51,9 +53,10 @@ the following addresses on any browser:
 - `{IP_ADDRESS}:8000/#/{GAME_CODE}/2` to play as the guesser
 
 where `GAME_CODE` is any alphanumeric game code, and `IP_ADDRESS` is the
-address of the machine hosting the server.
+address of the machine hosting the server (e.g. `localhost` if running on your
+own computer).
 
-### The Traitor
+## The Traitor
 
 We noticed that simple ways of fooling the AI include drawing squiggles over an
 image, or surrounding an image with a border or a box, and others.
@@ -67,6 +70,6 @@ guesser sees the original image as usual.
 If you don't want to play with the traitor, then (for now) simply click submit
 on his player - options for enabling/disabling this player are forthcoming.
 
-## The Name
+# The Name
 
 Original name for this project inspired by [Colin Morris's blog post](http://colinmorris.github.io/blog/bad_flamingos).
