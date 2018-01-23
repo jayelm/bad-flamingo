@@ -621,7 +621,7 @@ class Board extends React.Component {
             (
               "The guesser got the drawing, but so did the AI - AI wins!"
             ) : (
-              "Gotta be cleverer? AI wins!"
+              "Gotta be cleverer - AI wins!"
             )
           )
         ) : (
