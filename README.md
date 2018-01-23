@@ -1,4 +1,6 @@
-![bad_flamingo_logo](./img/logo.png)
+<p align="center">
+  <img src="./img/logo.png"/>
+</p>
 
 ---
 
