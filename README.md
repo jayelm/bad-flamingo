@@ -4,6 +4,8 @@
 
 ---
 
+*A [Hack Cambridge Ternary](https://hackcambridge.com/) project*
+
 **Pictionary, with an AI twist!**
 
 You, the **drawer**, create a drawing of a certain word or phrase. Your friend,
