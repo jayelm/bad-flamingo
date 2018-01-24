@@ -36,7 +36,6 @@ class Board extends React.Component {
       this.setState({ displayResults: true });
       setTimeout(() => {
         this.setState({ displayResults: false });
-        // this.canvas.style.display = 'block';
       }, 3000);
     }
   }

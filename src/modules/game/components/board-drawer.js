@@ -110,12 +110,6 @@ class BoardDrawer extends React.Component {
 
       // Reset Timestamps
       this.lastTimestamp = thisTimestamp;
-
-      // Check Google AI Quickdraw every 250 m/s
-      // if(thisTimestamp - lastTimestamp_check > 250){
-      //   checkQuickDraw();
-      //   lastTimestamp_check = thisTimestamp;
-      // }
     };
   }
 
@@ -130,10 +124,10 @@ class BoardDrawer extends React.Component {
     }
     this.ink = [[], [], []];
   }
+
   // Initialize Ink Array
   initInk() {
     this.paths = [];
-    // ink = [[],[],[]];
     this.inks = [];
   }
 
@@ -172,7 +166,6 @@ class BoardDrawer extends React.Component {
         this.canvas.offsetHeight
       )
     );
-    // this.props.events.endTurn();
   }
 
   render() {

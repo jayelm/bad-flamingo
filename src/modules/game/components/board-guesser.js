@@ -70,6 +70,7 @@ class BoardGuesser extends React.Component {
     // Remove Paper Path Layer
     if (this.paths) {
       this.paths.forEach(path => path.remove());
+      this.paths = []
     }
   }
 
