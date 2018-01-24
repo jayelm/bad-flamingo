@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { HashRouter as Router, Route, browserHistory } from 'react-router-dom';
+import { HashRouter as Router, Route, browserHistory, Link } from 'react-router-dom';
 
 import Multiplayer from './game/components/multiplayer.js';
 import './app.css';
@@ -38,6 +38,15 @@ class Main extends React.Component {
   }
 
   render() {
+    function randomGameCode() {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      for (var i = 0; i < 4; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+      return text;
+    }
+
     return (
       <div className="parentWrapper">
         <a
@@ -85,7 +94,7 @@ class Main extends React.Component {
               />
               <h1 className="heroname">Bad Flamingo</h1>
               <p>Fool the computer, but not your friends!</p>
-              <button>New</button>
+              <Link to={"/" + randomGameCode() + "/0"}><button>New</button></Link>
               <br />
               <br />
               <input
@@ -94,9 +103,10 @@ class Main extends React.Component {
                 name="gameCode"
                 placeholder="code"
                 maxLength="4"
+                ref={gameCodeInput => {this.gameCodeInput = gameCodeInput;}}
               />
               <br />
-              <button>Join</button>
+              <Link to={"/" + "1" + "/2"}><button>Join</button></Link>
             </div>
           </div>
         </div>

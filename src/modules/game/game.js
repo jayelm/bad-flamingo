@@ -6,8 +6,8 @@
  * https://opensource.org/licenses/MIT.
  */
 
-const NN_TOP_GUESSES = 5;
-const FIRST_TO_N = 5;
+const NN_TOP_GUESSES = 10;
+const FIRST_TO_N = 10000;
 
 import TOPICS from './topics';
 
@@ -69,7 +69,8 @@ const BadFlamingo = Game({
     aiScore: 0,
     lastPlayerGuess: null,
     lastNNGuesses: null,
-    newRound: false,
+    winResult: null,
+    newRound: false
   }),
 
   moves: {
@@ -130,7 +131,7 @@ const BadFlamingo = Game({
           return {
             ...G,
             playerScore:
-              winResult.win === 'guesser' || winResult.win == 'both'
+              winResult.win === 'guesser'
                 ? G.playerScore + 1
                 : G.playerScore,
             aiScore:
@@ -146,7 +147,8 @@ const BadFlamingo = Game({
             editedPathinks: null,
             lastPlayerGuess: winResult.playerGuess,
             lastNNGuesses: winResult.nnGuesses,
-            newRound: true,
+            winResult: winResult,
+            newRound: true
           };
         },
         turnOrder: TurnOrder.ANY,
