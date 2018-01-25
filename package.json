@@ -5,7 +5,8 @@
   "repository": "https://github.com/jayelm/bad-flamingo",
   "scripts": {
     "dev": "cross-env NODE_ENV=development babel-watch --presets es2015 src/server.js",
-    "build": "webpack --config src/webpack.prod.js",
+    "babel": "babel --presets es2015 src -d dist --ignore components*",
+    "build": "webpack --config src/webpack.prod.js && npm run babel",
     "prod": "node src/entry.js",
     "lint": "eslint ."
   },

@@ -29,7 +29,7 @@ if (DEV) {
 }
 
 if (PROD) {
-  app.use(KoaStatic(path.join(__dirname, 'dist')));
+  app.use(KoaStatic(path.join(__dirname, 'static')));
   app.use(KoaHelmet());
 }
 
