@@ -23,15 +23,16 @@ class BoardTraitor extends React.Component {
   };
 
   componentDidMount() {
-    paper.install(this);
     this.paper = new paper.PaperScope();
     this.paper.setup(this.canvas); // Setup Paper #canvas
+
     this.importThenRender();
   }
 
   componentDidUpdate() {
     this.paper = new paper.PaperScope();
     this.paper.setup(this.canvas); // Setup Paper #canvas
+
     this.importThenRender();
   }
 
@@ -159,6 +160,7 @@ class BoardTraitor extends React.Component {
           className="resetButton"
           id="btnClear"
           onClick={() => this.drawInk()}
+          disabled={this.props.G.pathinks !== null}
         >
           Reset
         </button>
@@ -169,6 +171,7 @@ class BoardTraitor extends React.Component {
       <div>
         <div id="wrapper">
           <canvas
+            hidpi="off"
             ref={canvas => {
               this.canvas = canvas;
             }}

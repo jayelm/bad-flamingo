@@ -3,9 +3,10 @@ export function importPathInks(pathinks, width, height) {
     var d = Math.min(width, height);
     pathsexport = pathsexport.map(path => {
         var simplepath = JSON.parse(path);
-        simplepath[1]['segments'] = simplepath[1]['segments'].map(segment => {
+        simplepath[1]["segments"] = simplepath[1]["segments"].map(segment => {
             return [segment[0] * d, segment[1] * d];
         });
+        simplepath[1]["strokeWidth"] = 0.01 * width;
         return JSON.stringify(simplepath);
     });
     var inks = Object.values(pathinks);
@@ -31,7 +32,7 @@ export function exportPathInks(pathinks, width, height) {
     var d = Math.min(width, height);
     pathsexport = pathsexport.map(path => {
         var simplepath = JSON.parse(path);
-        simplepath[1]['segments'] = simplepath[1]['segments'].map(segment => {
+        simplepath[1]["segments"] = simplepath[1]["segments"].map(segment => {
             return [segment[0] / d, segment[1] / d];
         });
         return JSON.stringify(simplepath);

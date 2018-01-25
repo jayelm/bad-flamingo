@@ -6,14 +6,14 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import React from 'react';
-import paper from 'paper';
-import PropTypes from 'prop-types';
-import './board.css';
-import TOPICS from '../topics';
-import horsey from 'horsey';
-import './horsey.css';
-import { importPathInks } from './utils.js';
+import React from "react";
+import paper from "paper";
+import PropTypes from "prop-types";
+import "./board.css";
+import TOPICS from "../topics";
+import horsey from "horsey";
+import "./horsey.css";
+import { importPathInks } from "./utils.js";
 
 class BoardGuesser extends React.Component {
   static propTypes = {
@@ -21,17 +21,17 @@ class BoardGuesser extends React.Component {
     ctx: PropTypes.any.isRequired,
     moves: PropTypes.any.isRequired,
     playerID: PropTypes.string,
-    isActive: PropTypes.bool,
+    isActive: PropTypes.bool
   };
 
   componentDidMount() {
-    paper.install(this);
     this.paper = new paper.PaperScope();
     this.paper.setup(this.canvas); // Setup Paper #canvas
+
     horsey(this.guess, {
       debounce: 10,
       limit: 4,
-      source: [{ list: TOPICS }],
+      source: [{ list: TOPICS }]
     });
     this.importThenRender();
   }
@@ -39,6 +39,7 @@ class BoardGuesser extends React.Component {
   componentDidUpdate() {
     this.paper = new paper.PaperScope();
     this.paper.setup(this.canvas); // Setup Paper #canvas
+    
     this.importThenRender();
   }
 
@@ -70,14 +71,14 @@ class BoardGuesser extends React.Component {
     // Remove Paper Path Layer
     if (this.paths) {
       this.paths.forEach(path => path.remove());
-      this.paths = []
+      this.paths = [];
     }
   }
 
   submitGuess() {
     if (this.guess !== null) {
-      if (this.guess === '') {
-        alert('Enter a guess!');
+      if (this.guess === "") {
+        alert("Enter a guess!");
       } else {
         this.props.moves.submitGuess(this.guess.value);
       }
@@ -113,6 +114,7 @@ class BoardGuesser extends React.Component {
       <div>
         <div id="wrapper">
           <canvas
+            hidpi="off"
             ref={canvas => {
               this.canvas = canvas;
             }}

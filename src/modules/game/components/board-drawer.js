@@ -6,11 +6,11 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import React from 'react';
-import paper from 'paper';
-import PropTypes from 'prop-types';
-import './board.css';
-import { exportPathInks, importPathInks } from './utils.js';
+import React from "react";
+import paper from "paper";
+import PropTypes from "prop-types";
+import "./board.css";
+import { exportPathInks, importPathInks } from "./utils.js";
 
 // const REAL_PLAYER_NAMES = ['drawer', 'traitor', 'guesser'];
 
@@ -20,16 +20,16 @@ class BoardDrawer extends React.Component {
     ctx: PropTypes.any.isRequired,
     moves: PropTypes.any.isRequired,
     playerID: PropTypes.string,
-    isActive: PropTypes.bool,
+    isActive: PropTypes.bool
   };
 
   componentDidMount() {
     this.mountDrawer();
-    this.importThenRender()
+    this.importThenRender();
   }
 
   componentDidUpdate() {
-    this.importThenRender()
+    this.importThenRender();
   }
 
   importThenRender() {
@@ -40,6 +40,8 @@ class BoardDrawer extends React.Component {
         this.canvas.offsetHeight
       );
       this.drawInk();
+    } else {
+      this.clearDrawing()
     }
   }
 
@@ -58,7 +60,6 @@ class BoardDrawer extends React.Component {
   mountDrawer() {
     this.guess = null;
     this.timer = 0;
-    paper.install(this);
     this.initInk(); // Initialize Ink array ()
     this.paper = new paper.PaperScope();
 
@@ -71,8 +72,8 @@ class BoardDrawer extends React.Component {
       // New Paper Path and Settings
 
       this.path = new this.paper.Path();
-      this.path.strokeColor = '#5C604D';
-      this.path.strokeWidth = 7;
+      this.path.strokeColor = "#5C604D";
+      this.path.strokeWidth = 0.01 * this.canvas.offsetWidth;
       this.paths.push(this.path);
       // Get Time [ms] for each Guess (needed for accurate Google AI Guessing)
       var thisTimestamp = event.event.timeStamp;
@@ -185,6 +186,7 @@ class BoardDrawer extends React.Component {
           className="resetButton"
           id="btnClear"
           onClick={() => this.clearDrawing()}
+          disabled={this.props.G.pathinks !== null}
         >
           Reset
         </button>
@@ -195,6 +197,7 @@ class BoardDrawer extends React.Component {
       <div>
         <div id="wrapper">
           <canvas
+            hidpi="off"
             ref={canvas => {
               this.canvas = canvas;
             }}
