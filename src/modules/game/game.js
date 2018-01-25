@@ -9,15 +9,21 @@
 const NN_TOP_GUESSES = 10;
 const FIRST_TO_N = 10000;
 
-import TOPICS from './topics';
+import TOPICS from "./topics";
 
-import { Game, TurnOrder } from 'boardgame.io/core';
+import { Game, TurnOrder } from "boardgame.io/core";
 
 function randomTopic(veto) {
+  const topic = TOPICS[Math.floor(Math.random() * TOPICS.length)];
   if (veto !== undefined) {
-    // TODO: make this different
+    if (!Array.isArray(veto)) {
+      veto = [veto];
+    }
+    if (veto.includes(topic) && veto.length < TOPICS.length) {
+      return randomTopic(veto);
+    }
   }
-  return TOPICS[Math.floor(Math.random() * TOPICS.length)];
+  return topic;
 }
 
 function nnWins(nnGuesses, topic) {
@@ -37,25 +43,25 @@ function getWinResult(G, ctx) {
     var nnWin = nnWins(G.nnGuesses, G.topic);
     var playerWin = G.playerGuess === G.topic;
     if (playerWin && nnWin) {
-      win = 'both';
+      win = "both";
     } else if (playerWin) {
-      win = 'guesser';
+      win = "guesser";
     } else if (nnWin) {
-      win = 'ai';
+      win = "ai";
     } else {
-      win = 'neither';
+      win = "neither";
     }
     return {
       win: win,
       playerGuess: G.playerGuess,
       nnGuesses: G.nnGuesses,
-      nnTopN: NN_TOP_GUESSES,
+      nnTopN: NN_TOP_GUESSES
     };
   }
 }
 
 const BadFlamingo = Game({
-  name: 'bad-flamingo',
+  name: "bad-flamingo",
 
   setup: () => ({
     round: 0,
@@ -75,24 +81,24 @@ const BadFlamingo = Game({
 
   moves: {
     submitDraw(G, ctx, pathinks) {
-      console.log('submitDraw');
+      console.log("submitDraw");
       return {
         ...G,
-        pathinks: pathinks,
+        pathinks: pathinks
         // TODO: Do we need this copy? (No - Jack)
         // editedPathinks: JSON.parse(JSON.stringify(pathinks)),
       };
     },
     submitGuess(G, ctx, playerGuess) {
-      console.log('submitGuess');
+      console.log("submitGuess");
       return { ...G, playerGuess };
     },
     // TODO: Add option where traitor just affirms everything
     // (that's called playing w/o traitor)
     submitTraitor(G, ctx, [editedPathinks, nnGuesses]) {
-      console.log('submitTraitor');
+      console.log("submitTraitor");
       return { ...G, editedPathinks, nnGuesses };
-    },
+    }
   },
 
   flow: {
@@ -100,30 +106,30 @@ const BadFlamingo = Game({
 
     endGameIf: (G, ctx) => {
       if (G.playerScore === FIRST_TO_N) {
-        return 'player';
+        return "player";
       }
       if (G.aiScore == FIRST_TO_N) {
-        return 'AI';
+        return "AI";
       }
     },
 
     phases: [
       {
-        name: 'draw phase',
-        allowedMoves: ['submitDraw'],
+        name: "draw phase",
+        allowedMoves: ["submitDraw"],
         onPhaseBegin: (G, ctx) => {
           return {
             ...G,
-            topic: randomTopic(),
+            topic: randomTopic()
           };
         },
         endPhaseIf: G => G.pathinks !== null,
-        turnOrder: TurnOrder.ANY,
+        turnOrder: TurnOrder.ANY
       },
 
       {
-        name: 'play phase',
-        allowedMoves: ['submitGuess', 'submitTraitor'],
+        name: "play phase",
+        allowedMoves: ["submitGuess", "submitTraitor"],
         endPhaseIf: G => getWinResult(G, undefined) !== undefined,
         onPhaseEnd: (G, ctx) => {
           var winResult = getWinResult(G, undefined);
@@ -131,11 +137,9 @@ const BadFlamingo = Game({
           return {
             ...G,
             playerScore:
-              winResult.win === 'guesser'
-                ? G.playerScore + 1
-                : G.playerScore,
+              winResult.win === "guesser" ? G.playerScore + 1 : G.playerScore,
             aiScore:
-              winResult.win === 'ai' || winResult.win == 'both'
+              winResult.win === "ai" || winResult.win == "both"
                 ? G.aiScore + 1
                 : G.aiScore,
             topic: null,
@@ -151,10 +155,10 @@ const BadFlamingo = Game({
             newRound: true
           };
         },
-        turnOrder: TurnOrder.ANY,
-      },
-    ],
-  },
+        turnOrder: TurnOrder.ANY
+      }
+    ]
+  }
 });
 
 export default BadFlamingo;
