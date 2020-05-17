@@ -6,12 +6,12 @@
  * https://opensource.org/licenses/MIT.
  */
 
-const NN_TOP_GUESSES = 10;
-const FIRST_TO_N = 10000;
-
 import TOPICS from "./topics";
 
-import { Game, TurnOrder } from "boardgame.io/core";
+import { TurnOrder, ActivePlayers } from 'boardgame.io/core';
+
+const NN_TOP_GUESSES = 10;
+const FIRST_TO_N = 10000;
 
 function randomTopic(veto) {
   const topic = TOPICS[Math.floor(Math.random() * TOPICS.length)];
@@ -38,7 +38,6 @@ function nnWins(nnGuesses, topic) {
 function getWinResult(G, ctx) {
   // Need player guess and nn guess to be set
   if (G.playerGuess !== null && G.nnGuesses !== null) {
-    console.log(G.nnGuesses);
     var win = null;
     var nnWin = nnWins(G.nnGuesses, G.topic);
     var playerWin = G.playerGuess === G.topic;
@@ -60,13 +59,37 @@ function getWinResult(G, ctx) {
   }
 }
 
-const BadFlamingo = Game({
+const moves = {
+  submitDraw(G, ctx, pathinks) {
+    console.log("submitDraw");
+    return {
+      ...G,
+      pathinks: pathinks
+      // TODO: Do we need this copy? (No - Jack)
+      // editedPathinks: JSON.parse(JSON.stringify(pathinks)),
+    };
+  },
+  submitGuess(G, ctx, playerGuess) {
+    console.log("submitGuess");
+    return { ...G, playerGuess };
+  },
+  // TODO: Add option where traitor just affirms everything
+  // (that's called playing w/o traitor)
+  submitTraitor(G, ctx, [editedPathinks, nnGuesses]) {
+    console.log("submitTraitor");
+    return { ...G, editedPathinks, nnGuesses };
+  }
+}
+
+const BadFlamingo = {
   name: "bad-flamingo",
 
+  minPlayers: 3,
+  maxPlayers: 3,
   setup: () => ({
     round: 0,
     pathinks: null,
-    topic: null,
+    topic: randomTopic(),
     previousTopics: [],
     playerGuess: null,
     editedPathinks: null,
@@ -79,59 +102,32 @@ const BadFlamingo = Game({
     newRound: false
   }),
 
-  moves: {
-    submitDraw(G, ctx, pathinks) {
-      console.log("submitDraw");
-      return {
-        ...G,
-        pathinks: pathinks
-        // TODO: Do we need this copy? (No - Jack)
-        // editedPathinks: JSON.parse(JSON.stringify(pathinks)),
-      };
-    },
-    submitGuess(G, ctx, playerGuess) {
-      console.log("submitGuess");
-      return { ...G, playerGuess };
-    },
-    // TODO: Add option where traitor just affirms everything
-    // (that's called playing w/o traitor)
-    submitTraitor(G, ctx, [editedPathinks, nnGuesses]) {
-      console.log("submitTraitor");
-      return { ...G, editedPathinks, nnGuesses };
+  endIf: (G, ctx) => {
+    if (G.playerScore === FIRST_TO_N) {
+      return "player";
+    }
+    if (G.aiScore == FIRST_TO_N) {
+      return "AI";
     }
   },
-
-  flow: {
-    movesPerTurn: 1,
-
-    endGameIf: (G, ctx) => {
-      if (G.playerScore === FIRST_TO_N) {
-        return "player";
-      }
-      if (G.aiScore == FIRST_TO_N) {
-        return "AI";
-      }
-    },
-
-    phases: [
-      {
-        name: "draw phase",
-        allowedMoves: ["submitDraw"],
-        onPhaseBegin: (G, ctx) => {
-          return {
-            ...G,
-            topic: randomTopic()
-          };
-        },
-        endPhaseIf: G => G.pathinks !== null,
-        turnOrder: TurnOrder.ANY
+  
+    phases: {
+      draw: {
+        moves: {submitDraw: moves.submitDraw},
+        endIf: G => G.pathinks !== null,
+        next: 'traitor',
+        start: true
       },
-
-      {
-        name: "play phase",
-        allowedMoves: ["submitGuess", "submitTraitor"],
-        endPhaseIf: G => getWinResult(G, undefined) !== undefined,
-        onPhaseEnd: (G, ctx) => {
+      traitor: {
+        moves: {submitTraitor: moves.submitTraitor},
+        endIf: G => G.editedPathinks !== null,
+        next: 'guess'
+      },
+      guess: {
+        moves: {submitGuess: moves.submitGuess},
+        next: 'draw',
+        endIf: G => getWinResult(G, undefined) !== undefined,
+        onEnd: (G, ctx) => {
           var winResult = getWinResult(G, undefined);
           // Reset guesses, etc for next round
           return {
@@ -142,7 +138,7 @@ const BadFlamingo = Game({
               winResult.win === "ai" || winResult.win == "both"
                 ? G.aiScore + 1
                 : G.aiScore,
-            topic: null,
+            topic: randomTopic(),
             previousTopics: [...G.previousTopics, G.topic],
             round: G.round + 1,
             pathinks: null,
@@ -154,11 +150,9 @@ const BadFlamingo = Game({
             winResult: winResult,
             newRound: true
           };
-        },
-        turnOrder: TurnOrder.ANY
+        }
       }
-    ]
-  }
-});
+    }
+};
 
 export default BadFlamingo;

@@ -10,3 +10,4 @@ npm
 .idea/
 .vscode/*
 docs/
+build

@@ -7,15 +7,21 @@
  */
 
 import React from 'react';
-import { Client } from 'boardgame.io/client';
+import { Client } from 'boardgame.io/react';
 import BadFlamingo from '../game';
 import Board from './board';
+import { SocketIO } from 'boardgame.io/multiplayer';
+import logger from 'redux-logger';
+import { applyMiddleware } from 'redux';
+
 
 const App = Client({
   game: BadFlamingo,
+  enhancer: applyMiddleware(logger),
   board: Board,
   debug: false,
-  multiplayer: true,
+  numPlayers: 3,
+  multiplayer: SocketIO({ server: `${window.location.protocol}//${window.location.hostname}:${window.location.port}`}),
 });
 
 const Multiplayer = props => {

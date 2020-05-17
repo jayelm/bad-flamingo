@@ -195,6 +195,7 @@ class BoardDrawer extends React.Component {
 
     return (
       <div>
+        <div className="topic">Your word is: {this.props.G.topic}</div>
         <div id="wrapper">
           <canvas
             hidpi="off"
