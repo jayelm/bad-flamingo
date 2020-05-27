@@ -7,9 +7,10 @@
  */
 
 import React from 'react';
-import { HashRouter as Router, Route, browserHistory, Link } from 'react-router-dom';
+import { HashRouter as Router, Route, Link } from 'react-router-dom';
 
 import Multiplayer from './game/components/multiplayer.js';
+import Lobby from './lobby.js';
 import './app.css';
 
 class Main extends React.Component {
@@ -18,6 +19,7 @@ class Main extends React.Component {
     this.state = {
       imgSrc:
         'http://colinmorris.github.io/assets/quickdraw/svgs/bottom/awful/0.svg',
+      gameCode: '',
     };
     this.idx = 0;
   }
@@ -103,10 +105,12 @@ class Main extends React.Component {
                 name="gameCode"
                 placeholder="code"
                 maxLength="4"
-                ref={gameCodeInput => {this.gameCodeInput = gameCodeInput;}}
+                value={this.state.gameCode} onChange={(event) => this.setState({gameCode: event.target.value})}
               />
               <br />
-              <Link to={"/" + "1" + "/2"}><button>Join</button></Link>
+              <Link to={"/" + this.state.gameCode + "/2"}><button>Join</button></Link>
+              <br />
+              <Link to={"/lobby"}><button>Lobby</button></Link>
             </div>
           </div>
         </div>
@@ -156,10 +160,11 @@ class Main extends React.Component {
 }
 
 const App = () => (
-  <Router history={browserHistory}>
+  <Router>
     <main>
       <Route key="1" exact path="/:gameid/:playerid" component={Multiplayer} />
       <Route key="2" exact path="/" component={Main} />
+      <Route key="3" exact path="/lobby" component={Lobby} />
     </main>
   </Router>
 );
